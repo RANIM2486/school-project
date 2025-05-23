@@ -2,59 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Http\Resources\SubjectResource;
-use App\Models\Subject;
+ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Subject;
+use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-
-
+    // عرض كل المواد مع المعلم المسؤول
     public function index()
     {
-        return Cache::remember('subjects', 3600, function () {
-            return SubjectResource::collection(
-                Subject::with(['teacher', 'classes'])->get()
-            );
-        });
+        return Subject::with('teacher')->get();
     }
 
+    // إضافة مادة جديدة باستخدام Form Request
     public function store(StoreSubjectRequest $request)
     {
         $subject = Subject::create($request->validated());
-
-        Cache::forget('subjects');
-
-        return new SubjectResource($subject->load('teacher'));
+        return response()->json($subject, 201);
     }
 
-    public function show(Subject $subject)
+    // عرض تفاصيل مادة واحدة
+    public function show($id)
     {
-        return new SubjectResource($subject->load(['teacher', 'classes', 'grades']));
+        return Subject::with('teacher')->findOrFail($id);
     }
 
-    public function update(UpdateSubjectRequest $request, Subject $subject)
+    // تعديل بيانات مادة
+    public function update(UpdateSubjectRequest $request, $id)
     {
+        $subject = Subject::findOrFail($id);
         $subject->update($request->validated());
-
-        Cache::forget('subjects');
-
-        return new SubjectResource($subject);
+        return response()->json($subject);
     }
 
-    public function destroy(Subject $subject)
+    // حذف مادة
+    public function destroy($id)
     {
-        $subject->delete();
-
-        Cache::forget('subjects');
-
-        return response()->json([
-            'message' => 'تم حذف المادة الدراسية'
-        ]);
+        Subject::findOrFail($id)->delete();
+        return response()->json(['message' => 'تم حذف المادة بنجاح']);
     }
-
-}
+ }

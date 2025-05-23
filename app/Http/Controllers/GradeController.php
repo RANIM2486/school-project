@@ -3,61 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreGradeRequest;
+use App\Http\Requests\UpdateGradeRequest;
+use App\Models\Grade;
 use Illuminate\Http\Request;
-use App\Http\Resources\SubjectResource;
-use App\Models\Subject;
-use App\Http\Requests\StoreSubjectRequest;
-use App\Http\Requests\UpdateSubjectRequest;
-use Illuminate\Support\Facades\Cache;
-
-
 
 class GradeController extends Controller
 {
-
-
-
+    // عرض كل العلامات مع الطالب والمادة المرتبطين
     public function index()
     {
-        return Cache::remember('subjects', 3600, function () {
-            return SubjectResource::collection(
-                Subject::with(['teacher', 'classes'])->get()
-            );
-        });
+        return Grade::with(['student', 'subject'])->get();
     }
 
-    public function store(StoreSubjectRequest $request)
+    // إضافة علامة جديدة باستخدام Form Request
+    public function store(StoreGradeRequest $request)
     {
-        $subject = Subject::create($request->validated());
-
-        Cache::forget('subjects');
-
-        return new SubjectResource($subject->load('teacher'));
+        $grade = Grade::create($request->validated());
+        return response()->json($grade, 201);
     }
 
-    public function show(Subject $subject)
+    // عرض تفاصيل علامة معينة
+    public function show($id)
     {
-        return new SubjectResource($subject->load(['teacher', 'classes', 'grades']));
+        return Grade::with(['student', 'subject'])->findOrFail($id);
     }
 
-    public function update(UpdateSubjectRequest $request, Subject $subject)
+    // تعديل علامة باستخدام UpdateGradeRequest
+    public function update(UpdateGradeRequest $request, $id)
     {
-        $subject->update($request->validated());
-
-        Cache::forget('subjects');
-
-        return new SubjectResource($subject);
+        $grade = Grade::findOrFail($id);
+        $grade->update($request->validated());
+        return response()->json($grade);
     }
 
-    public function destroy(Subject $subject)
+    // حذف علامة
+    public function destroy($id)
     {
-        $subject->delete();
-
-        Cache::forget('subjects');
-
-        return response()->json([
-            'message' => 'تم حذف المادة الدراسية'
-        ]);
+        Grade::findOrFail($id)->delete();
+        return response()->json(['message' => 'تم حذف العلامة بنجاح']);
     }
-
-}
+ }
