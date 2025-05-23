@@ -18,19 +18,19 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next,$roles)
     {
 
-
-        // تحقق مما إذا كان المستخدم مسجلاً الدخول
-        if (!Auth::check()) {
+      $user=$request->user();
+        if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        // تحقق مما إذا كان للمستخدم الدور المطلوب
-        if (Auth::user()->role !== $roles) {
-            return response()->json(['message' => 'Forbidden'], 403);
+        foreach($roles as $role){
+            if($user->role===$role)
+         {
+            return $next($request);
+         }
+            }
+        return response()->json(['message' => 'Forbidden'], 403);
         }
+     }
 
-        // إذا كان كل شيء على ما يرام، استمر في الطلب
-        return $next($request);
-    }
-}
 
