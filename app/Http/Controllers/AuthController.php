@@ -13,7 +13,7 @@ use illuminate\support\FacadesHash;
 class AuthController extends Controller
 {
 
-       }
+}
 
 
 
