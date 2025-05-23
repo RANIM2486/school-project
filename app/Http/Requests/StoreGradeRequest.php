@@ -4,24 +4,24 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSubjectRequest extends FormRequest
+class StoreGradeRequest extends FormRequest
 {
-     public function authorize(): bool
+    public function authorize(): bool
     {
         return true;
     }
 
-     public function rules(): array
+    public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'min_grade' => 'required|integer|min:0|max:100',
-            'max_grade' => 'required|integer|min:1|max:100',
+            'student_id' => 'required|exists:students,id',
+            'subject_id' => 'required|exists:subjects,id',
             'exam1' => 'nullable|integer|min:0|max:100',
             'exam2' => 'nullable|integer|min:0|max:100',
             'exam3' => 'nullable|integer|min:0|max:100',
+            'quiz' => 'nullable|integer|min:0|max:100',
             'final_exam' => 'nullable|integer|min:0|max:100',
-            'teacher_id' => 'nullable|exists:users,id',
+            'date' => 'nullable|date',
         ];
     }
- }
+}

@@ -2,74 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\StudentResource;
-use App\Http\Resources\StudentDetailsResource;
-use App\Models\Student;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Student;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-
+    // عرض كل الطلاب مع الصف والشعبة المرتبطين
     public function index()
     {
-        $students = Student::with(['class', 'section', 'grades', 'comments'])
-            ->filter(request()->only('search', 'class_id', 'section_id'))
-            ->paginate(10);
-
-        return StudentResource::collection($students);
+        return Student::with(['class', 'section'])->get();
     }
 
+    // إضافة طالب جديد باستخدام Form Request للتحقق
     public function store(StoreStudentRequest $request)
     {
-        $data = $request->validated();
-
-        if ($request->hasFile('photo')) {
-            $data['photo_path'] = $request->file('photo')->store('students', 'public');
-        }
-
-        $student = Student::create($data);
-
-        return new StudentDetailsResource($student->load(['class', 'section']));
+        $student = Student::create($request->validated());
+        return response()->json($student, 201);
     }
 
-    public function show(Student $student)
+    // عرض تفاصيل طالب معين
+    public function show($id)
     {
-        return new StudentDetailsResource($student->load([
-            'class',
-            'section',
-            'grades.subject',
-            'comments.user'
-        ]));
+        return Student::with(['class', 'section'])->findOrFail($id);
     }
 
-    public function update(UpdateStudentRequest $request, Student $student)
+    // تعديل بيانات طالب باستخدام UpdateStudentRequest
+    public function update(UpdateStudentRequest $request, $id)
     {
-        $data = $request->validated();
-
-        if ($request->hasFile('photo')) {
-            if ($student->photo_path) {
-                Storage::disk('public')->delete($student->photo_path);
-            }
-            $data['photo_path'] = $request->file('photo')->store('students', 'public');
-        }
-
-        $student->update($data);
-
-        return new StudentDetailsResource($student);
+        $student = Student::findOrFail($id);
+        $student->update($request->validated());
+        return response()->json($student);
     }
 
-    public function destroy(Student $student)
+    // حذف طالب
+    public function destroy($id)
     {
-        if ($student->photo_path) {
-            Storage::disk('public')->delete($student->photo_path);
-        }
-
-        $student->delete();
-
-        return response()->json([
-            'message' => 'تم حذف الطالب بنجاح'
-        ]);
+        Student::findOrFail($id)->delete();
+        return response()->json(['message' => 'تم حذف الطالب بنجاح']);
     }
-}
+ }
