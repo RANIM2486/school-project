@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('reasons', function (Blueprint $table) {
             $table->id();
-            $table->string('name');  // اسم السبب
-            $table->integer('points');
+            $table->string('name');
+            $table->integer('value'); // قيمة النقطة المرتبطة
+            $table->enum('type', ['موجب', 'سالب']);
             $table->timestamps();
         });
     }

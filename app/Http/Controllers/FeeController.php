@@ -26,7 +26,7 @@ class FeeController extends Controller
         $fee = Fee::findOrFail($id);
 
         $validated = $request->validate([
-            'status' => 'required|in:paid,unpaid',
+            'status' => 'required|in:مدفوع,غير مدفوع',
         ]);
 
         $fee->update($validated);

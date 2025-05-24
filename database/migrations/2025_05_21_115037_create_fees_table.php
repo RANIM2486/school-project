@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->enum('type', ['school', 'bus']);
-            $table->enum('status', ['paid', 'unpaid']);
+            $table->enum('type', ['مدرسة', 'باص']);
+            $table->enum('status', ['مدفوع', 'غير مدفوع']);
             $table->date('due_date');
             $table->timestamps();
         });
