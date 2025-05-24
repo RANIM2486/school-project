@@ -13,24 +13,17 @@ class ReasonSeeder extends Seeder
      */
     public function run(): void
     {
-         Reason::create([
-            'name' => 'Excellent Attendance',
-            'points' => 10
-        ]);
 
-        Reason::create([
-            'name' => 'Helping Others',
-            'points' => 5
-        ]);
+        $reasons = [
+            ['text' => 'مساعدة زميل', 'value' => 5, 'type' => 'موجب'],
+            ['text' => 'تأخر عن الحصة', 'value' => -3, 'type' => 'سالب'],
+            ['text' => 'سلوك عدواني', 'value' => -10, 'type' => 'سالب'],
+            ['text' => 'تنظيف الصف', 'value' => 4, 'type' => 'موجب'],
+            ['text' => 'إزعاج داخل الصف', 'value' => -2, 'type' => 'سالب'],
+                    ];
 
-        Reason::create([
-            'name' => 'Discipline',
-            'points' => 7
-        ]);
-
-        Reason::create([
-            'name' => 'Outstanding Behavior',
-            'points' => 8
-        ]);
+        foreach ($reasons as $reason) {
+            Reason::create($reason);
+        }
     }
 }

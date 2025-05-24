@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Point extends Model
 {
-    protected $fillable=['student_id','teacher_id','reason_id','points_awarded'];
+    protected $fillable=['student_id','teacher_id','reason_id'];
     public function student()
     {
         return $this->belongsTo(Student::class);
