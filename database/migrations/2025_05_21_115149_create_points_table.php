@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('points', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('reason_id')->constrained('reasons')->onDelete('cascade');
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
+            $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
             $table->integer('points_awarded');
             $table->timestamps();
         });
