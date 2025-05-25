@@ -16,7 +16,7 @@ return new class extends Migration
     $table->string('name'); // اسم الملاحظة
     $table->date('date'); // تاريخ الملاحظة
     $table->enum('type', ['إيجابية', 'سلبية', 'تحذير']); // نوع الملاحظة
-    $table->foreignId('student_id')->constrained('students')->onDelete('cascade'); // الطالب المرتبط
+    $table->foreignId('student_id')->constrained('current_students')->onDelete('cascade'); // الطالب المرتبط
     $table->timestamps();
 });
     }

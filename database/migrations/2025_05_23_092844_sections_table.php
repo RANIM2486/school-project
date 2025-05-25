@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // اسم الشعبة
-               $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
+            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
+             $table->foreignId('teacher_id')->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

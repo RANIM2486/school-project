@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Http\Controllers\Teacher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,4 +49,34 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function section()
+    {
+        return $this->hasOne(Section::class);
+    }
+
+    // علاقة مع المعلم (واحد لواحد)
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+    // علاقة مع الموظف (واحد لواحد)
+   /* public function employee()
+    {
+        return $this->hasOne(Employee::class);
+    }*/
+
+    // علاقة مع المهام (واحد لعديد)
+   /* public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }*/
+
+    // علاقة مع الطلاب إذا كان ولي أمر
+    public function children()
+    {
+        return $this->hasMany(Student::class, 'parent_id');
+    }
+
 }
