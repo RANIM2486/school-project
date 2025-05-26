@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreatePointsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('points', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained('current_students')->onDelete('cascade');
+
             // علاقات
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('reason_id')->constrained('reasons')->onDelete('cascade');
             $table->timestamps();
@@ -28,4 +29,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('points');
     }
-};
+}
