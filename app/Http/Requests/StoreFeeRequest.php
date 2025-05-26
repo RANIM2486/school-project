@@ -24,8 +24,8 @@ class StoreFeeRequest extends FormRequest
         return [
             'student_id' => 'required|exists:students,id',
             'amount' => 'required|numeric',
-            'type' => 'required|in:school,bus',
-            'status' => 'required|in:paid,unpaid',
+            'type' => 'required|in:مدرسة, باص',
+            'status' => 'required|in:مدفوع,غير مدفوع',
             'due_date' => 'required|date'
         ];
     }
