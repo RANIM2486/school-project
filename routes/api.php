@@ -15,13 +15,18 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 // point route
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/points', [PointController::class, 'index']);         // عرض كل النقاط
-    Route::post('/points', [PointController::class, 'store']);        // إنشاء نقطة جديدة
-    Route::get('/points/{id}', [PointController::class, 'show']);     // عرض نقطة معينة
-    Route::put('/points/{id}', [PointController::class, 'update']);   // تحديث نقطة
-    Route::delete('/points/{id}', [PointController::class, 'destroy']); // حذف نقطة
+Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
+    Route::post('/points', [PointController::class, 'store']);
+    Route::put('/points/{id}', [PointController::class, 'update']);
+    Route::delete('/points/{id}', [PointController::class, 'destroy']);
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/points', [PointController::class, 'index']);
+    Route::get('/points/{id}', [PointController::class, 'show']);
+    Route::get('/students/{studentId}/points', [PointController::class, 'getStudentPoints']);
+    Route::get('/students/{studentId}/total', [PointController::class, 'getStudentTotalPoints']);
+    Route::get('/students/{studentId}/points/{type}', [PointController::class, 'getPointsByType']);
+});
 
 
