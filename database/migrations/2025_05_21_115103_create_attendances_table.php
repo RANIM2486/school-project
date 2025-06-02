@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('guide_id')->constrained('users')->onDelete('cascade');
             $table->date('attendance_date');
-            $table->enum('status', ['present', 'absent']);
+            $table->enum('status', ['موجود', 'غير موجود']);
             $table->timestamps();
         });
     }
