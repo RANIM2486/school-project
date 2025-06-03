@@ -20,7 +20,7 @@ class StoreStudentRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'gender' => 'required|in:ذكر,أنثى',
             'birth_date' => 'required|date',
-            'national_id' => 'required|digits:11|unique:students,national_id',
+           // 'national_id' => 'required|digits:11|unique:students,national_id',
             'address' => 'nullable|string',
             'entry_date' => 'required|date',
             'user_id' => 'required|exists:users,id',

@@ -14,10 +14,10 @@ class StoreClassRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'grade_level' => 'required|string|max:255',         // المرحلة الدراسية
-            'class_name' => 'required|string|max:255',          // اسم الصف
+            'level' => 'required|string|max:255',         // المرحلة الدراسية
+            'name' => 'required|string|max:255',          // اسم الصف
             'student_count' => 'required|integer|min:0',        // عدد الطلاب
-            'fee' => 'required|numeric|min:0',                  // القسط
+            'fees' => 'required|numeric|min:0',                  // القسط
         ];
     }
 }

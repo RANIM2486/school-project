@@ -10,37 +10,47 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    // عرض كل المواد مع المعلم المسؤول
+
+    // ✔️ للمدير
     public function index()
     {
-        return Subject::with('teacher')->get();
+        return response()->json(Subject::all());
     }
 
-    // إضافة مادة جديدة باستخدام Form Request
+    // ✔️ إنشاء مادة (IT)
     public function store(StoreSubjectRequest $request)
     {
         $subject = Subject::create($request->validated());
-        return response()->json($subject, 201);
+        return response()->json([
+            'message' => 'تم إنشاء المادة بنجاح',
+            'data' => $subject
+        ], 201);
     }
 
-    // عرض تفاصيل مادة واحدة
+    // ✔️ عرض مادة واحدة
     public function show($id)
     {
-        return Subject::with('teacher')->findOrFail($id);
+        return response()->json(Subject::findOrFail($id));
     }
 
-    // تعديل بيانات مادة
+    // ✔️ تعديل (IT)
     public function update(UpdateSubjectRequest $request, $id)
     {
         $subject = Subject::findOrFail($id);
         $subject->update($request->validated());
-        return response()->json($subject);
+
+        return response()->json([
+            'message' => 'تم التحديث بنجاح',
+            'data' => $subject
+        ]);
     }
 
-    // حذف مادة
+    // ✔️ حذف (IT)
     public function destroy($id)
     {
-        Subject::findOrFail($id)->delete();
-        return response()->json(['message' => 'تم حذف المادة بنجاح']);
+        $subject = Subject::findOrFail($id);
+        $subject->delete();
+
+        return response()->json(['message' => 'تم حذف المادة']);
     }
- }
+}

@@ -37,7 +37,7 @@ class RegisterRequest extends FormRequest
             'email.email' => 'صيغة البريد الإلكتروني غير صحيحة.',
             'email.unique' => 'البريد الإلكتروني مستخدم مسبقًا.',
             'password.required' => 'حقل كلمة المرور مطلوب.',
-          //  'password.confirmed' => 'كلمة المرور غير متطابقة.',
+           'password.confirmed' => 'كلمة المرور غير متطابقة.',
             'role.required' => 'يجب تحديد الدور.',
             'role.in' => 'الدور غير صحيح.',
         ];

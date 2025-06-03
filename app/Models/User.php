@@ -55,25 +55,7 @@ class User extends Authenticatable
         return $this->hasOne(Section::class);
     }
 
-    // علاقة مع المعلم (واحد لواحد)
-    public function teacher()
-    {
-        return $this->hasOne(Teacher::class);
-    }
 
-    // علاقة مع الموظف (واحد لواحد)
-   /* public function employee()
-    {
-        return $this->hasOne(Employee::class);
-    }*/
-
-    // علاقة مع المهام (واحد لعديد)
-   /* public function tasks()
-    {
-        return $this->hasMany(Task::class);
-    }*/
-
-    // علاقة مع الطلاب إذا كان ولي أمر
     public function children()
     {
         return $this->hasMany(Student::class, 'parent_id');

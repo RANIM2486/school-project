@@ -10,37 +10,40 @@ use Illuminate\Http\Request;
 
 class SectionController extends Controller
 {
-    // عرض كل الشعب مع الصف المرتبط
+   // ✅ عرض كل الشعب (متاح فقط للمدير)
     public function index()
     {
-        return Section::with('class')->get();
+        return response()->json(Section::all());
     }
 
-    // إضافة شعبة جديدة
+    // ✅ عرض شعبة محددة
+    public function show($id)
+    {
+        $section = Section::findOrFail($id);
+        return response()->json($section);
+    }
+
+    // ✅ إنشاء شعبة جديدة (متاح لـ IT فقط)
     public function store(StoreSectionRequest $request)
     {
         $section = Section::create($request->validated());
-        return response()->json($section, 201);
+        return response()->json(['message' => 'تم إنشاء الشعبة بنجاح', 'data' => $section], 201);
     }
 
-    // عرض شعبة واحدة
-    public function show($id)
-    {
-        return Section::with('class')->findOrFail($id);
-    }
-
-    // تعديل شعبة
+    // ✅ تعديل شعبة (متاح لـ IT فقط)
     public function update(UpdateSectionRequest $request, $id)
     {
         $section = Section::findOrFail($id);
         $section->update($request->validated());
-        return response()->json($section);
+        return response()->json(['message' => 'تم تعديل الشعبة بنجاح', 'data' => $section]);
     }
 
-    // حذف شعبة
+    // ✅ حذف شعبة (متاح لـ IT فقط)
     public function destroy($id)
     {
-        Section::findOrFail($id)->delete();
+        $section = Section::findOrFail($id);
+        $section->delete();
         return response()->json(['message' => 'تم حذف الشعبة بنجاح']);
     }
+
 }
