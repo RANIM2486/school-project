@@ -15,7 +15,7 @@ class student extends Model
         'last_name',
         'gender',
         'birth_date',
-        'national_id',
+        //'national_id',
         'address',
         'entry_date',
         'user_id',
