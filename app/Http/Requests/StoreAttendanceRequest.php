@@ -23,9 +23,9 @@ class StoreAttendanceRequest extends FormRequest
     {
         return [
             'student_id' => 'required|exists:students,id',
-            'guide_id' => 'required|exists:guides,id',
+            'guide_id' => 'required|exists:users,id',
             'attendance_date' => 'required|date',
-            'status' => 'required|in:present,absent'
+            'status' => 'required|in:موجود,غير موجود'
         ];
     }
 }
