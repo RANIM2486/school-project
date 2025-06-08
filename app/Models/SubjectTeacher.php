@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
- use HasFactory;
+
 class SubjectTeacher extends Model
 {
+     use HasFactory;
     protected $table = 'subjects_teachers';
 
     protected $fillable = [
         'subject_id',
         'section_id',
-        'classes_id', // تم تغييره هنا
+        'class_id', // تم تغييره هنا
         'teacher_id'
     ];
 
