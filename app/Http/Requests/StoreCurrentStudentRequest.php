@@ -17,6 +17,7 @@ class StoreCurrentStudentRequest extends FormRequest
             'student_id' => 'required|exists:students,id',
             'class_id' => 'required|exists:classes,id',
             'section_id' => 'required|exists:sections,id',
+            'status' =>'required|in: مستمر, مغادر, مؤجل'
         ];
     }
 }

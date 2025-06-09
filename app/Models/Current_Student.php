@@ -14,7 +14,7 @@ class Current_Student extends Model
       'student_id',
         'class_id',
         'section_id',
-        'code',
+        'status',
     ];
 
     public function student()
@@ -44,6 +44,24 @@ class Current_Student extends Model
     {
         return $this->hasMany(Grade::class);
     }
-
-
+    public static function countActive()
+    {
+        return self::where('status', 'مستمر')->count();
+    }
+    public static function countPostponed()
+    {
+        return self::where('status', 'مؤجل')->count();
+    }
+    public static function countLeft()
+    {
+        return self::where('status', 'مغادر')->count();
+    }
+    public static function countBySection($sectionid)
+    {
+        return self::where('section_id', $sectionid)->count();
+    }
+    public static function countByClass($classId)
+    {
+        return self::where('class_id', $classId)->count();
+    }
 }

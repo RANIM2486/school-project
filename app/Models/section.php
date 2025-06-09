@@ -18,10 +18,11 @@ class section extends Model
         return $this->belongsTo(Classes::class, 'class_id');
     }
 
-    public function students()
-    {
-        return $this->hasMany(Student::class);
-    }
+    // ؟؟؟؟؟غير موجود
+   // public function students()
+    // {
+    //     return $this->hasMany(Student::class);
+    // }
 
     public function currentStudents()
     {
