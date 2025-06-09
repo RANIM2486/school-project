@@ -17,6 +17,7 @@ class UpdateCurrentStudentRequest extends FormRequest
             'student_id' => 'sometimes|exists:students,id',
             'class_id' => 'sometimes|exists:classes,id',
             'section_id' => 'sometimes|exists:sections,id',
+            'status' =>'sometimes|in: مستمر, مغادر, مؤجل'
         ];
     }
 }

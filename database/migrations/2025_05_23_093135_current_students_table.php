@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('current_students', function (Blueprint $table) {
     $table->id(); // رقم السجل (رقم تسلسلي)
+    $table->enum('status', ['مستمر', 'مغادر', 'مؤجل']); // حالة الطالب
+
 
     $table->foreignId('student_id')->constrained('students')->onDelete('cascade'); // الطالب المرتبط
     $table->foreignId('class_id')->constrained('classes')->onDelete('cascade'); // الصف المرتبط

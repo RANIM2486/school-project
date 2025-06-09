@@ -14,6 +14,8 @@ use App\Http\Controllers\PointController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ITController;
+use App\Http\Controllers\CurrentStudentController;
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -88,7 +90,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/students', [StudentController::class, 'store']);
     Route::get('/students/{id}', [StudentController::class, 'show']);
     Route::put('/students/{id}', [StudentController::class, 'update']);
-     Route::delete('/students/{id}', [StudentController::class, 'destroy']);
+    Route::delete('/students/{id}', [StudentController::class, 'destroy']);
+    //current _Students
+    Route::apiResource('current-students', CurrentStudentController::class);
+    Route::get('/count/active', [CurrentStudentController::class, 'countActive']);
+    Route::get('/count/postponed', [CurrentStudentController::class, 'countPostponed']);
+    Route::get('/count/left', [CurrentStudentController::class, 'countLeft']);
+    Route::get('/count/class/{classId}', [CurrentStudentController::class, 'countByClass']);
+    Route::get('/count/section/{sectionId}', [CurrentStudentController::class, 'countBySection']);
 
     // Comments
     Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {
@@ -110,4 +119,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/students/{studentId}/points', [PointController::class, 'getStudentPoints']);
     Route::get('/students/{studentId}/total', [PointController::class, 'getStudentTotalPoints']);
     Route::get('/students/{studentId}/points/{type}', [PointController::class, 'getPointsByType']);
+
+
 });
