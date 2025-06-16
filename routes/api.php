@@ -9,13 +9,14 @@ use App\Http\Controllers\GradeController;
 use App\Http\Controllers\GuideController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
- use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ITController;
 use App\Http\Controllers\CurrentStudentController;
-
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AdController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -119,6 +120,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/students/{studentId}/points', [PointController::class, 'getStudentPoints']);
     Route::get('/students/{studentId}/total', [PointController::class, 'getStudentTotalPoints']);
     Route::get('/students/{studentId}/points/{type}', [PointController::class, 'getPointsByType']);
-
+    //ADS
+    Route::middleware(['auth:sanctum', 'role:guide'])->group(function () {
+    Route::get('/ads', [AdController::class, 'index']);
+    Route::post('/ads', [AdController::class, 'store']);
+    Route::put('/ads', [AdController::class, 'update']);
+    Route::delete('/ads', [AdController::class, 'destroy']);
+    //notifications
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications', [NotificationController::class, 'store']);
+    Route::put('/notifications', [NotificationController::class, 'update']);
+    Route::delete('/notifications', [NotificationController::class, 'destroy']);
+});
+    //comments
+Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
+    Route::get('/comments', [CommentController::class, 'index']);
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::put('/comments', [CommentController::class, 'update']);
+    Route::delete('/comments', [CommentController::class, 'destroy']);
+});
 
 });
