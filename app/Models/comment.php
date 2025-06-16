@@ -13,11 +13,18 @@ class comment extends Model
         'date',
         'type',
         'student_id',
+        'teacher_id'
     ];
 
     public function student()
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'teacher_id');
+    }
+
 
 }
