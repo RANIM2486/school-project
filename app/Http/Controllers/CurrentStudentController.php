@@ -15,7 +15,7 @@ class CurrentStudentController extends Controller
         // إنشاء الطالب الحالي باستخدام create
         $currentStudent = Current_Student::create([
             'student_id' => $request->student_id,
-            'group_id' => $request->group_id,
+            'section_id' => $request->section_id,
             'semester_id' => $request->semester_id,
             'class_id' => $request->class_id,
             'status' => $request->status,
