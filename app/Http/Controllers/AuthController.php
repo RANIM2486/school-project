@@ -6,12 +6,18 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request)
+       public function register(RegisterRequest $request)
     {
+        // تحقق مما إذا كان المستخدم الحالي هو IT
+        if (Auth::user() && Auth::user()->role !== 'it') {
+            return response()->json(['message' => 'ليس لديك الصلاحيات لإنشاء حسابات'], 403);
+        }
+
         $validated = $request->validated();
 
         $user = User::create([

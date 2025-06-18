@@ -51,20 +51,23 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
 });
 
 // 🧑‍💻 IT Routes
-Route::middleware(['auth:sanctum', 'role:it'])->prefix('it')->group(function () {
-    Route::post('/create-user', [ITController::class, 'createUser']);
+Route::middleware(['auth:sanctum', 'role:it'])->group(function () {
+    Route::post('/users', [ITController::class, 'createUser']);
 
+    // صفوف
+    Route::post('/classes', [ITController::class, 'createClass']);
+    Route::put('/classes/{id}', [ITController::class, 'updateClass']);
+    Route::delete('/classes/{id}', [ITController::class, 'deleteClass']);
+
+    // شعب
     Route::post('/sections', [ITController::class, 'createSection']);
     Route::put('/sections/{id}', [ITController::class, 'updateSection']);
     Route::delete('/sections/{id}', [ITController::class, 'deleteSection']);
 
+    // مواد
     Route::post('/subjects', [ITController::class, 'createSubject']);
     Route::put('/subjects/{id}', [ITController::class, 'updateSubject']);
     Route::delete('/subjects/{id}', [ITController::class, 'deleteSubject']);
-
-    Route::post('/classes', [ITController::class, 'createClass']);
-    Route::put('/classes/{id}', [ITController::class, 'updateClass']);
-    Route::delete('/classes/{id}', [ITController::class, 'deleteClass']);
 });
 
 
