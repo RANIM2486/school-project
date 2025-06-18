@@ -20,14 +20,12 @@ class UpdateStudentRequest extends FormRequest
             'last_name' => 'sometimes|string|max:255',
             'gender' => 'sometimes|in:ذكر,أنثى',
             'birth_date' => 'sometimes|date',
-            //'national_id' => 'sometimes|digits:11|unique:students,national_id,' . $this->route('id'),
-            'address' => 'nullable|string',
+            'address' => 'nullable|string|max:255',
             'entry_date' => 'sometimes|date',
-            'user_id' => 'sometimes|exists:users,id',
-            'parent_id' => 'sometimes|exists:users,id',
-
             'class_id' => 'sometimes|exists:classes,id',
             'section_id' => 'sometimes|exists:sections,id',
+            'parent_id' => 'sometimes|exists:users,id',
+            ' user_id' => 'required|exists:users,id',
         ];
     }
- }
+}

@@ -54,20 +54,21 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
 Route::middleware(['auth:sanctum', 'role:it'])->group(function () {
     Route::post('/users', [ITController::class, 'createUser']);
 
-    // صفوف
     Route::post('/classes', [ITController::class, 'createClass']);
-    Route::put('/classes/{id}', [ITController::class, 'updateClass']);
+     Route::patch('/classes/{id}', [ITController::class, 'updateClass']);
     Route::delete('/classes/{id}', [ITController::class, 'deleteClass']);
 
-    // شعب
-    Route::post('/sections', [ITController::class, 'createSection']);
-    Route::put('/sections/{id}', [ITController::class, 'updateSection']);
-    Route::delete('/sections/{id}', [ITController::class, 'deleteSection']);
+     Route::post('/sections', [ITController::class, 'createSection']);
+    Route::patch('/sections/{id}', [ITController::class, 'updateSection']);
+     Route::delete('/sections/{id}', [ITController::class, 'deleteSection']);
 
-    // مواد
-    Route::post('/subjects', [ITController::class, 'createSubject']);
-    Route::put('/subjects/{id}', [ITController::class, 'updateSubject']);
+ Route::post('/subjects', [ITController::class, 'createSubject']);
+    Route::patch('/subjects/{id}', [ITController::class, 'updateSubject']);
     Route::delete('/subjects/{id}', [ITController::class, 'deleteSubject']);
+
+    Route::post('/students', [ITController::class, 'createStudent']);
+    Route::patch('/students/{id}', [ITController::class, 'updateStudent']);
+    Route::delete('/students/{id}', [ITController::class, 'deleteStudent']);
 });
 
 
@@ -135,12 +136,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/notifications', [NotificationController::class, 'update']);
     Route::delete('/notifications', [NotificationController::class, 'destroy']);
 });
-    //comments
-Route::middleware(['auth:sanctum', 'role:teacher'])->group(function () {
-    Route::get('/comments', [CommentController::class, 'index']);
-    Route::post('/comments', [CommentController::class, 'store']);
-    Route::put('/comments', [CommentController::class, 'update']);
-    Route::delete('/comments', [CommentController::class, 'destroy']);
+
+    Route::middleware(['auth', 'can:view-students'])->group(function () {
+    Route::get('/students', [StudentController::class, 'index']);
+    Route::get('/students/{id}', [StudentController::class, 'show']);
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/classes', [ClassesController::class, 'index']);
+    Route::get('/classes/{id}', [ClassesController::class, 'show']);
+
+    Route::get('/sections', [SectionController::class, 'index']); // للحصول على جميع الأقسام
+    Route::get('/sections/{id}', [SectionController::class, 'show']); // للحصول على قسم محدد
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/subjects', [SubjectController::class, 'index']); // للحصول على جميع المواد
+    Route::get('/subjects/{id}', [SubjectController::class, 'show']); // للحصول على مادة محددة
+ });
 });
