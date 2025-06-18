@@ -113,16 +113,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Grades (عرض فقط)
     Route::get('/grades', [GradeController::class, 'index']);
+    Route::get('/grades', [GradeController::class, 'store']);
     Route::get('/grades/{id}', [GradeController::class, 'show']);
     Route::put('/grades/{id}', [GradeController::class, 'update']);
     Route::delete('/grades/{id}', [GradeController::class, 'destroy']);
 
     // Points (عرض فقط)
+    Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {
     Route::get('/points', [PointController::class, 'index']);
+    Route::post('/points', [PointController::class, 'store']);
     Route::get('/points/{id}', [PointController::class, 'show']);
+    Route::put('/points/{id}', [PointController::class, 'update']);
+    Route::delete('/points/{id}', [PointController::class, 'destroy']);
     Route::get('/students/{studentId}/points', [PointController::class, 'getStudentPoints']);
-    Route::get('/students/{studentId}/total', [PointController::class, 'getStudentTotalPoints']);
+    Route::get('/students/{studentId}/total-points', [PointController::class, 'getStudentTotalPoints']);
     Route::get('/students/{studentId}/points/{type}', [PointController::class, 'getPointsByType']);
+    });
     //ADS
     Route::middleware(['auth:sanctum', 'role:guide'])->group(function () {
     Route::get('/ads', [AdController::class, 'index']);
