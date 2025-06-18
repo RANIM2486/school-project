@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreClassRequest;
+use App\Http\Requests\UpdateClassRequest;
+use App\Http\Requests\StoreSectionRequest;
+use App\Http\Requests\UpdateSectionRequest;
+use App\Http\Requests\StoreSubjectRequest;
+use App\Http\Requests\UpdateSubjectRequest;
+use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
+
 use App\Models\User;
 use App\Models\Section;
 use App\Models\Subject;
 use App\Models\Classe; // تأكدي من اسم المودل إذا اسمه Class أو Classe
 use App\Models\classes;
+use App\Models\student;
 use Illuminate\Support\Facades\Hash;
 
 class ITController extends Controller
@@ -33,62 +43,37 @@ class ITController extends Controller
     }
 
     // 🏫 الشعب
-   public function createClass(Request $request)
+  public function createClass(StoreClassRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'level' => 'nullable|string',
-            'tuition' => 'nullable|integer',
-            'student_count' => 'nullable|integer',
-        ]);
-
-        $class = classes::create($validated);
+        $class = classes::create($request->validated());
         return response()->json($class, 201);
     }
 
-    public function updateClass(Request $request, $id)
+    public function updateClass(UpdateClassRequest $request, $id)
     {
         $class = classes::findOrFail($id);
-        $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'level' => 'nullable|string',
-            'tuition' => 'nullable|integer',
-            'student_count' => 'nullable|integer',
-        ]);
-        $class->update($validated);
+        $class->update($request->validated());
         return response()->json($class);
     }
 
     public function deleteClass($id)
     {
-        $class = Classes::findOrFail($id);
+        $class = classes::findOrFail($id);
         $class->delete();
         return response()->json(['message' => 'تم حذف الصف بنجاح']);
     }
 
-    // ✳️ الشعب
-    public function createSection(Request $request)
+    // الشعب
+    public function createSection(StoreSectionRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'class_id' => 'required|exists:school_classes,id',
-            'guide_id' => 'nullable|exists:users,id',
-        ]);
-
-        $section = Section::create($validated);
+        $section = Section::create($request->validated());
         return response()->json($section, 201);
     }
 
-    public function updateSection(Request $request, $id)
+    public function updateSection(UpdateSectionRequest $request, $id)
     {
         $section = Section::findOrFail($id);
-        $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'class_id' => 'sometimes|exists:school_classes,id',
-            'guide_id' => 'nullable|exists:users,id',
-        ]);
-
-        $section->update($validated);
+        $section->update($request->validated());
         return response()->json($section);
     }
 
@@ -99,24 +84,17 @@ class ITController extends Controller
         return response()->json(['message' => 'تم حذف الشعبة بنجاح']);
     }
 
-    // ✳️ المواد
-    public function createSubject(Request $request)
+    // المواد
+    public function createSubject(StoreSubjectRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $subject = Subject::create($validated);
+        $subject = Subject::create($request->validated());
         return response()->json($subject, 201);
     }
 
-    public function updateSubject(Request $request, $id)
+    public function updateSubject(UpdateSubjectRequest $request, $id)
     {
         $subject = Subject::findOrFail($id);
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-        $subject->update($validated);
+        $subject->update($request->validated());
         return response()->json($subject);
     }
 
@@ -125,5 +103,32 @@ class ITController extends Controller
         $subject = Subject::findOrFail($id);
         $subject->delete();
         return response()->json(['message' => 'تم حذف المادة بنجاح']);
+    }
+
+    // الطلاب
+    public function createStudent(StoreStudentRequest $request)
+    {
+        $student = Student::create($request->validated());
+        return response()->json([
+            'message' => 'تم إنشاء الطالب بنجاح',
+            'data' => $student
+        ], 201);
+    }
+
+    public function updateStudent(UpdateStudentRequest $request, $id)
+    {
+        $student = Student::findOrFail($id);
+        $student->update($request->validated());
+        return response()->json([
+            'message' => 'تم تعديل بيانات الطالب بنجاح',
+            'data' => $student
+        ]);
+    }
+
+    public function deleteStudent($id)
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+        return response()->json(['message' => 'تم حذف الطالب بنجاح']);
     }
 }

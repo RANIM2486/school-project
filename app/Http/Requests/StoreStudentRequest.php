@@ -20,13 +20,13 @@ class StoreStudentRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'gender' => 'required|in:ذكر,أنثى',
             'birth_date' => 'required|date',
-           // 'national_id' => 'required|digits:11|unique:students,national_id',
-            'address' => 'nullable|string',
+            'address' => 'nullable|string|max:255',
             'entry_date' => 'required|date',
-            'user_id' => 'required|exists:users,id',
-            'parent_id' => 'required|exists:users,id',
             'class_id' => 'required|exists:classes,id',
             'section_id' => 'required|exists:sections,id',
+            'parent_id' => 'required|exists:users,id',
+           ' user_id' => 'required|exists:users,id',
         ];
     }
- }
+}
+
