@@ -10,6 +10,7 @@ use App\Models\Point;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Current_Student;
 use Illuminate\Support\Facades\Auth;
 
 class GuideController extends Controller
@@ -38,25 +39,110 @@ class GuideController extends Controller
         return response()->json($students);
     }
 
-    // إدخال علامة لطالب
+        // إدخال علامة لطالب
     public function addGrade(Request $request)
     {
         $user = Auth::user();
 
         $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'grade' => 'required|numeric|min:0|max:100',
+            'student_id'   => 'required|exists:current_students,id',
+            'subject_id'   => 'required|exists:subjects,id',
+            'exam1'        => 'nullable|numeric|min:0|max:100',
+            'exam2'        => 'nullable|numeric|min:0|max:100',
+            'exam3'        => 'nullable|numeric|min:0|max:100',
+            'quiz'         => 'nullable|numeric|min:0|max:100',
+            'final_exam'   => 'nullable|numeric|min:0|max:100',
+            'date'         => 'nullable|date',
         ]);
 
         if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        $grade = Grade::create($validated);
-        return response()->json($grade, 201);
-    }
+        // ابحث عن سجل سابق للطالب في نفس المادة
+        $grade = Grade::where('student_id', $validated['student_id'])
+                    ->where('subject_id', $validated['subject_id'])
+                    ->first();
 
+        if ($grade) {
+            // إذا وجد، قم بتحديثه
+            $grade->update($validated);
+            return response()->json($grade, 200); // 200 تعني تم التحديث
+        } else {
+            // إذا لم يوجد، قم بإنشائه
+            $grade = Grade::create($validated);
+            return response()->json($grade, 201); // 201 تعني تم الإنشاء
+        }
+    }
+    public function showStudentGrades($student_id)
+    {
+        $user = Auth::user();
+
+        // التحقق من الصلاحية
+        if (!$this->isStudentInGuideSections($student_id, $user->id)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        // جلب العلامات
+        $grades = Grade::where('student_id', $student_id)
+                    ->with('subject') // جلب معلومات المادة
+                    ->get();
+
+        return response()->json($grades);
+    }
+    public function updateGrade(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'exam1'        => 'nullable|numeric|min:0|max:100',
+            'exam2'        => 'nullable|numeric|min:0|max:100',
+            'exam3'        => 'nullable|numeric|min:0|max:100',
+            'quiz'         => 'nullable|numeric|min:0|max:100',
+            'final_exam'   => 'nullable|numeric|min:0|max:100',
+            'date'         => 'nullable|date',
+        ]);
+
+        $grade = Grade::findOrFail($id);
+
+        // تحقق من صلاحية المرشد للتعديل
+        if (!$this->isStudentInGuideSections($grade->student_id, $user->id)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $grade->update($validated);
+
+        return response()->json($grade, 200);
+    }
+    public function deleteGrade($id)
+    {
+        $user = Auth::user();
+
+        $grade = Grade::findOrFail($id);
+
+        // تحقق أن الطالب ضمن أقسام هذا المرشد
+        if (!$this->isStudentInGuideSections($grade->student_id, $user->id)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $grade->delete();
+
+        return response()->json(['message' => 'Grade deleted successfully']);
+    }
+    public function getGrades()
+    {
+        $user = Auth::user();
+
+        // جلب IDs الطلاب المرتبطين بالمرشد
+        $studentIds = $this->getGuideStudentIds($user->id);
+
+        // جلب العلامات لهؤلاء الطلاب
+        $grades = Grade::whereIn('student_id', $studentIds)
+                    ->with(['student', 'subject']) // في حال أردت عرض اسم الطالب أو المادة
+                    ->get();
+
+        return response()->json($grades);
+    }
     // نشر إعلان
     public function postAd(Request $request)
     {
@@ -133,5 +219,11 @@ class GuideController extends Controller
             ->whereHas('section', function ($query) use ($guideId) {
                 $query->where('guide_id', $guideId);
             })->exists();
+    }
+    private function getGuideStudentIds($guideId)
+    {
+        return Current_Student::whereHas('section', function ($query) use ($guideId) {
+            $query->where('guide_id', $guideId);
+        })->pluck('id');
     }
 }

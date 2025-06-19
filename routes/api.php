@@ -42,12 +42,30 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->prefix('teacher')->group(fu
 
 // 🧭 Guide Routes
 Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(function () {
-    Route::get('/my-sections', [GuideController::class, 'mySections']);
-    Route::get('/sections/{sectionId}/students', [GuideController::class, 'studentsInSection']);
-    Route::post('/grades', [GuideController::class, 'addGrade']);
-    Route::post('/ads', [GuideController::class, 'postAd']);
-    Route::post('/points', [GuideController::class, 'givePoint']);
-    Route::post('/attendance', [GuideController::class, 'markAttendance']);
+
+    //  إدارة الشعب
+    Route::get('/sections', [GuideController::class, 'mySections']); // استعراض الشعب التي يشرف عليها المرشد
+    Route::get('/sections/{sectionId}/students', [GuideController::class, 'studentsInSection']); // طلاب شعبة محددة
+
+    //  إدارة العلامات
+    Route::prefix('grades')->group(function () {
+
+        // إضافة أو تعديل تلقائي (إنشاء إذا لا يوجد)
+        Route::post('/', [GuideController::class, 'addGrade']);
+
+        // استعراض كل العلامات لطلاب المرشد
+        Route::get('/', [GuideController::class, 'getGrades']);
+
+        // استعراض علامات طالب معين
+        Route::get('/student/{student_id}', [GuideController::class, 'showStudentGrades']);
+
+        // تعديل سجل علامة موجود
+        Route::put('/{id}', [GuideController::class, 'updateGrade']);
+
+        // حذف علامة
+        Route::delete('/{id}', [GuideController::class, 'deleteGrade']);
+    });
+
 });
 
 // 🧑‍💻 IT Routes
