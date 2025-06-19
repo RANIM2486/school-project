@@ -10,8 +10,10 @@ use App\Models\Point;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Models\User;
+use \App\Models\Notification;
 use App\Models\Current_Student;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class GuideController extends Controller
 {
@@ -189,27 +191,38 @@ class GuideController extends Controller
         return response()->json($point, 201);
     }
 
-    // تسجيل حضور أو غياب
-    public function markAttendance(Request $request)
+     public function addAttendance(Request $request)
     {
         $user = Auth::user();
-
         $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'date' => 'required|date',
-            'status' => 'required|in:present,absent',
+            'student_id' => 'required|exists:current_students,id',
+            'status'     => 'required|in:موجود,غير موجود',
+            'attendance_date' => 'nullable|date',
         ]);
+
+        $student = Current_Student::with('student.parent')->findOrFail($validated['student_id']);
 
         if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
+        $date = $validated['attendance_date'] ?? Carbon::now()->toDateString();
+
         $attendance = Attendance::updateOrCreate(
-            ['student_id' => $validated['student_id'], 'date' => $validated['date']],
-            ['status' => $validated['status']]
+            ['student_id' => $student->id, 'attendance_date' => $date],
+            ['guide_id' => Auth::id(), 'status' => $validated['status']]
         );
 
-        return response()->json($attendance);
+        // إشعار لولي الأمر في حال الغياب
+        if ($validated['status'] === 'غير موجود' && $student->student && $student->student->parent_id) {
+            $this->notifyParent(
+                $student->student->parent_id,
+                'غياب الطالب',
+                "تم تسجيل غياب للطالب {$student->student->name} بتاريخ {$date}."
+            );
+        }
+
+        return response()->json($attendance, 201);
     }
 
     // دالة مساعدة: تحقق إن الطالب ضمن شعب الموجه
@@ -226,4 +239,13 @@ class GuideController extends Controller
             $query->where('guide_id', $guideId);
         })->pluck('id');
     }
+      private function notifyParent($userId, $title, $content)
+    {
+        Notification::create([
+            'user_id' => $userId,
+            'title' => $title,
+            'content' => $content,
+        ]);
+    }
 }
+
