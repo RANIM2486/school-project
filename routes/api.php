@@ -66,6 +66,8 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
         Route::delete('/{id}', [GuideController::class, 'deleteGrade']);
     });
 
+    //  تسجيل حضور
+    Route::post('/attendance', [GuideController::class, 'addAttendance']);
 });
 
 // 🧑‍💻 IT Routes
@@ -131,11 +133,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);});
 
     // Grades (عرض فقط)
-    Route::get('/grades', [GradeController::class, 'index']);
-    Route::get('/grades', [GradeController::class, 'store']);
-    Route::get('/grades/{id}', [GradeController::class, 'show']);
-    Route::put('/grades/{id}', [GradeController::class, 'update']);
-    Route::delete('/grades/{id}', [GradeController::class, 'destroy']);
+    // Route::get('/grades', [GradeController::class, 'index']);
+    // Route::get('/grades', [GradeController::class, 'store']);
+    // Route::get('/grades/{id}', [GradeController::class, 'show']);
+    // Route::put('/grades/{id}', [GradeController::class, 'update']);
+    // Route::delete('/grades/{id}', [GradeController::class, 'destroy']);
 
     // Points (عرض فقط)
     Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {

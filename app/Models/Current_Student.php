@@ -22,11 +22,14 @@ class Current_Student extends Model
         return $this->belongsTo(Student::class);
     }
 
+    public function Attendances()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
     public function class()
     {
         return $this->belongsTo(classes::class);
     }
-
     public function section()
     {
         return $this->belongsTo(Section::class);
