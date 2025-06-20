@@ -145,51 +145,6 @@ class GuideController extends Controller
 
         return response()->json($grades);
     }
-    // نشر إعلان
-    public function postAd(Request $request)
-    {
-        $user = Auth::user();
-
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
-        ]);
-
-        $ad = Ad::create([
-            'title' => $validated['title'],
-            'body' => $validated['body'],
-            'posted_by' => $user->id,
-        ]);
-
-        return response()->json($ad, 201);
-    }
-
-    // إضافة نقاط لطالب
-    public function givePoint(Request $request)
-    {
-        $user = Auth::user();
-
-        $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'type' => 'required|in:positive,negative',
-            'value' => 'required|integer',
-            'note' => 'nullable|string',
-        ]);
-
-        if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
-        $point = Point::create([
-            'student_id' => $validated['student_id'],
-            'type' => $validated['type'],
-            'value' => $validated['value'],
-            'note' => $validated['note'],
-            'given_by' => $user->id,
-        ]);
-
-        return response()->json($point, 201);
-    }
 
      public function addAttendance(Request $request)
     {
