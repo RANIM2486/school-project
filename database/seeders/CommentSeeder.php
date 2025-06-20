@@ -10,6 +10,7 @@ class CommentSeeder extends Seeder
         Comment::create([
             'student_id' => 1,
             'name' => 'ضعيف بالرياضيات',
+            'teacher_id' => 5,
             'date' => now(),
             'type' => 'إيجابية',
         ]);

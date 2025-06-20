@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Current_Student extends Model
+class CurrentStudent extends Model
 {
     use HasFactory;
 
@@ -22,9 +22,9 @@ class Current_Student extends Model
         return $this->belongsTo(Student::class);
     }
 
-    public function Attendances()
+   public function attendances()
     {
-        return $this->belongsTo(Attendance::class);
+        return $this->hasMany(Attendance::class, 'current_student_id');
     }
     public function class()
     {
