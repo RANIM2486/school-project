@@ -199,8 +199,9 @@ class GuideController extends Controller
             'status'     => 'required|in:موجود,غير موجود',
             'attendance_date' => 'nullable|date',
         ]);
-
+       
         $student = Student::with('student.parent')->findOrFail($validated['student_id']);
+
 
         if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
