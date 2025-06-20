@@ -49,19 +49,19 @@ class student extends Model
     }
 
     // العلامات التابعة للطالب
-  /*  public function grades()
+    public function grades()
     {
         return $this->hasMany(Grade::class);
     }
-*/
+
     // الملاحظات التابعة للطالب
-  /*  public function comments()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
-    }*/
+    }
 
     // السجلات كطالب حالي
-    public function current()
+    public function current ()
     {
         return $this->hasOne(Current_Student::class);
     }
