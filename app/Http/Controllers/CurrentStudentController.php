@@ -6,14 +6,14 @@ use App\Http\Requests\StoreCurrentStudentRequest;
 use App\Http\Requests\UpdateCurrentStudentRequest;
 use App\Models\classes;
 use App\Models\Current_Student;
-
+use App\Models\CurrentStudent;
 
 class CurrentStudentController extends Controller
 {
     public function store(StoreCurrentStudentRequest $request)
     {
         // إنشاء الطالب الحالي باستخدام create
-        $currentStudent = Current_Student::create([
+        $currentStudent = CurrentStudent::create([
             'student_id' => $request->student_id,
             'section_id' => $request->section_id,
             'semester_id' => $request->semester_id,
@@ -34,7 +34,7 @@ class CurrentStudentController extends Controller
 
     public function destroy($id)
     {
-        $currentStudent = Current_Student::findOrFail($id);
+        $currentStudent = CurrentStudent::findOrFail($id);
         $class =classes::find($currentStudent->class_id);
 
         // حذف الطالب
@@ -51,39 +51,39 @@ class CurrentStudentController extends Controller
 
     public function index()
     {
-        $students = Current_Student::with(['student', 'section','class'])->get();
+        $students = CurrentStudent::with(['student', 'section','class'])->get();
         return response()->json($students);
     }
 
     public function show($id)
     {
-        $student = Current_Student::with(['student', 'section', 'class'])->findOrFail($id);
+        $student = CurrentStudent::with(['student', 'section', 'class'])->findOrFail($id);
         return response()->json($student);
     }
 
       public function countActive()
     {
-        return response()->json(['active' => Current_Student::countActive()]);
+        return response()->json(['active' => CurrentStudent::countActive()]);
     }
 
     public function countPostponed()
     {
-        return response()->json(['postponed' => Current_Student::countPostponed()]);
+        return response()->json(['postponed' => CurrentStudent::countPostponed()]);
     }
 
     public function countLeft()
     {
-        return response()->json(['left' => Current_Student::countLeft()]);
+        return response()->json(['left' => CurrentStudent::countLeft()]);
     }
 
         public function countBySection($sectionid)
     {
-        return response()->json(['section_id' => $sectionid, 'count' => Current_Student::countBySection($sectionid)]);
+        return response()->json(['section_id' => $sectionid, 'count' => CurrentStudent::countBySection($sectionid)]);
     }
 
         public function countByClass($classId)
     {
-        return response()->json(['class_id' => $classId, 'count' => Current_Student::countByClass($classId)]);
+        return response()->json(['class_id' => $classId, 'count' => CurrentStudent::countByClass($classId)]);
     }
 }
 
