@@ -23,7 +23,7 @@ return new class extends Migration
     $table->integer('quiz')->nullable();  // مذاكرة
     $table->integer('final_exam')->nullable(); // الامتحان النهائي
     $table->date('date')->nullable(); // تاريخ التقييم
-
+    $table->unique(['student_id', 'subject_id']); // ضمان عدم تكرار الطالب + المادة
     $table->timestamps();
 });
 

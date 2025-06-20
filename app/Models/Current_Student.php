@@ -67,4 +67,7 @@ class Current_Student extends Model
     {
         return self::where('class_id', $classId)->count();
     }
+    public function fees() {
+        return $this->hasMany(Fee::class);
+    }
 }

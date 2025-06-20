@@ -17,6 +17,7 @@ use App\Http\Controllers\ITController;
 use App\Http\Controllers\CurrentStudentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\ParentController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -179,4 +180,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subjects', [SubjectController::class, 'index']); // للحصول على جميع المواد
     Route::get('/subjects/{id}', [SubjectController::class, 'show']); // للحصول على مادة محددة
  });
+ Route::middleware(['auth:sanctum', 'role:parent'])->group(function () {
+    Route::get('/children', [ParentController::class, 'myChildren']);
+    Route::get('/children/{studentId}/grades', [ParentController::class, 'childGrades']);
+    Route::get('/children/{studentId}/fees', [ParentController::class, 'childFees']);
+    Route::get('/children/{studentId}/points', [ParentController::class, 'childPoints']);
+    Route::get('/notifications', [ParentController::class, 'notifications']);
+    Route::get('/ads', [ParentController::class, 'ads']);
+});
+
 });
