@@ -78,7 +78,7 @@ class CurrentStudentController extends Controller
 
         public function countBySection($sectionid)
     {
-        return response()->json(['group_id' => $sectionid, 'count' => Current_Student::countByGroup($sectionid)]);
+        return response()->json(['section_id' => $sectionid, 'count' => Current_Student::countBySection($sectionid)]);
     }
 
         public function countByClass($classId)

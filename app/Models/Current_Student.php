@@ -34,19 +34,7 @@ class Current_Student extends Model
     {
         return $this->belongsTo(Section::class);
     }
-    public function points()
-    {
-        return $this->hasMany(Point::class);
-    }
-     // الملاحظات التابعة للطالب
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
-      public function grades()
-    {
-        return $this->hasMany(Grade::class);
-    }
+
     public static function countActive()
     {
         return self::where('status', 'مستمر')->count();
@@ -67,7 +55,5 @@ class Current_Student extends Model
     {
         return self::where('class_id', $classId)->count();
     }
-    public function fees() {
-        return $this->hasMany(Fee::class);
-    }
+
 }
