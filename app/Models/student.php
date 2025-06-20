@@ -49,11 +49,11 @@ class student extends Model
     }
 
     // العلامات التابعة للطالب
-  /*  public function grades()
+    public function grades()
     {
         return $this->hasMany(Grade::class);
     }
-*/
+
     // الملاحظات التابعة للطالب
   /*  public function comments()
     {
