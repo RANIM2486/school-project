@@ -200,8 +200,12 @@ class GuideController extends Controller
             'status'     => 'required|in:موجود,غير موجود',
             'attendance_date' => 'nullable|date',
         ]);
+       
+        $student = Student::with('student.parent')->findOrFail($validated['student_id']);
+
 
         $student = CurrentStudent::with('student.parent')->findOrFail($validated['student_id']);
+
 
         if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -236,7 +240,11 @@ class GuideController extends Controller
     }
     private function getGuideStudentIds($guideId)
     {
+
         return CurrentStudent::whereHas('section', function ($query) use ($guideId) {
+
+        return Student::whereHas('section', function ($query) use ($guideId) {
+
             $query->where('guide_id', $guideId);
         })->pluck('id');
     }
