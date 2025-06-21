@@ -41,7 +41,7 @@ class GuideController extends Controller
         return response()->json($students);
     }
 
-        // إدخال علامة لطالب
+   // إدخال علامة لطالب
     public function addGrade(Request $request)
     {
         $user = Auth::user();
@@ -122,105 +122,62 @@ class GuideController extends Controller
 
         $grade = Grade::findOrFail($id);
 
-        // تحقق أن الطالب ضمن أقسام هذا المرشد
+     // تحقق أن الطالب ضمن أقسام هذا المرشد
         if (!$this->isStudentInGuideSections($grade->student_id, $user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
-        }
+         }
 
         $grade->delete();
 
         return response()->json(['message' => 'Grade deleted successfully']);
     }
-    public function getGrades()
-    {
-        $user = Auth::user();
 
-        // جلب IDs الطلاب المرتبطين بالمرشد
-        $studentIds = $this->getGuideStudentIds($user->id);
+        public function getGrades()
+        {
+            $user = Auth::user();
 
-        // جلب العلامات لهؤلاء الطلاب
-        $grades = Grade::whereIn('student_id', $studentIds)
-                    ->with(['student', 'subject']) // في حال أردت عرض اسم الطالب أو المادة
-                    ->get();
+            // جلب IDs الطلاب المرتبطين بالمرشد
+            $studentIds = $this->getGuideStudentIds($user->id);
 
-        return response()->json($grades);
-    }
-    // نشر إعلان
-    public function postAd(Request $request)
-    {
-        $user = Auth::user();
+            // جلب العلامات لهؤلاء الطلاب
+            $grades = Grade::whereIn('student_id', $studentIds)
+                        ->with(['student', 'subject']) // في حال أردت عرض اسم الطالب أو المادة
+                        ->get();
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string',
-        ]);
-
-        $ad = Ad::create([
-            'title' => $validated['title'],
-            'body' => $validated['body'],
-            'posted_by' => $user->id,
-        ]);
-
-        return response()->json($ad, 201);
-    }
-
-    // إضافة نقاط لطالب
-    public function givePoint(Request $request)
-    {
-        $user = Auth::user();
-
-        $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'type' => 'required|in:positive,negative',
-            'value' => 'required|integer',
-            'note' => 'nullable|string',
-        ]);
-
-        if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json($grades);
         }
 
-        $point = Point::create([
-            'student_id' => $validated['student_id'],
-            'type' => $validated['type'],
-            'value' => $validated['value'],
-            'note' => $validated['note'],
-            'given_by' => $user->id,
-        ]);
-
-        return response()->json($point, 201);
-    }
-
-     public function addAttendance(Request $request)
-    {
-        $user = Auth::user();
-        $validated = $request->validate([
-            'student_id' => 'required|exists:current_students,id',
-            'status'     => 'required|in:موجود,غير موجود',
-            'attendance_date' => 'nullable|date',
-        ]);
-       
-        $student = Student::with('student.parent')->findOrFail($validated['student_id']);
+        public function addAttendance(Request $request)
+        {
+            $user = Auth::user();
+            $validated = $request->validate([
+                'student_id' => 'required|exists:current_students,id',
+                'status'     => 'required|in:موجود,غير موجود',
+                'attendance_date' => 'nullable|date',
+            ]);
 
 
-        if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
 
-        $date = $validated['attendance_date'] ?? Carbon::now()->toDateString();
+            $student = Student::with('student.parent')->findOrFail($validated['student_id']);
+              
+            if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
 
-        $attendance = Attendance::updateOrCreate(
-            ['student_id' => $student->id, 'attendance_date' => $date],
-            ['guide_id' => Auth::id(), 'status' => $validated['status']]
-        );
+            $date = $validated['attendance_date'] ?? Carbon::now()->toDateString();
 
-        // إشعار لولي الأمر في حال الغياب
-        if ($validated['status'] === 'غير موجود' && $student->student && $student->student->parent_id) {
-            $this->notifyParent(
-                $student->student->parent_id,
-                'غياب الطالب',
-                "تم تسجيل غياب للطالب {$student->student->name} بتاريخ {$date}."
+            $attendance = Attendance::updateOrCreate(
+                ['student_id' => $student->id, 'attendance_date' => $date],
+                ['guide_id' => Auth::id(), 'status' => $validated['status']]
             );
+
+            // إشعار لولي الأمر في حال الغياب
+            if ($validated['status'] === 'غير موجود' && $student->student && $student->student->parent_id) {
+                $this->notifyParent(
+                    $student->student->parent_id,
+                    'غياب الطالب',
+                    "تم تسجيل غياب للطالب {$student->student->name} بتاريخ {$date}."
+                );
         }
 
         return response()->json($attendance, 201);

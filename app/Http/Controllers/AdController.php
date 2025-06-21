@@ -4,43 +4,82 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ad;
+use Illuminate\Support\Facades\Auth;
 
 class AdController extends Controller
 {
-    public function index()
-    {
-        return Ad::with('user')->get();
-    }
+    //  إنشاء إعلان جديد
     public function store(Request $request)
     {
-
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',  // التحقق من وجود المستخدم
-            'title' => 'required|string|max:255',    // التحقق من العنوان
-            'content' => 'required|string',          // التحقق من المحتوى
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
         ]);
 
-        // إنشاء الإعلان وتخزينه في قاعدة البيانات
-        $ad = Ad::create($validated);
+        $ad = Ad::create([
+            'user_id' => Auth::id(),
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+        ]);
 
-        // إرجاع الرد مع الإعلان الذي تم إنشاؤه
-        return response()->json($ad, 201); // رمز الحالة 201 يعني أن المورد تم إنشاؤه بنجاح
+        return response()->json([
+            'message' => 'تم إنشاء الإعلان بنجاح',
+            'ad' => $ad
+        ], 201);
     }
-     public function update(Request $request)
+
+    //  عرض جميع الإعلانات
+    public function index()
     {
-        $ad = Ad::findOrFail($request->id);
-        $ad->update($request->only(['title', 'content']));
+        $ads = Ad::with('user:id,name')->latest()->get();
+
+        return response()->json($ads);
+    }
+
+    // عرض إعلان محدد
+    public function show($id)
+    {
+        $ad = Ad::with('user:id,name')->findOrFail($id);
+
         return response()->json($ad);
     }
-     public function destroy(Request $request)
+
+    //  تعديل إعلان
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'id' => 'required|exists:ads,id'
+        $ad = Ad::findOrFail($id);
+
+        // التأكد أن المستخدم هو صاحب الإعلان
+        if ($ad->user_id !== Auth::id()) {
+            return response()->json(['error' => 'غير مسموح بالتعديل'], 403);
+        }
+
+        $validated = $request->validate([
+            'title' => 'sometimes|string|max:255',
+            'content' => 'sometimes|string',
         ]);
 
-        $ad = Ad::findOrFail($request->id);
+        $ad->update($validated);
+
+        return response()->json([
+            'message' => 'تم تعديل الإعلان',
+            'ad' => $ad
+        ]);
+    }
+
+    //  حذف إعلان
+    public function destroy($id)
+    {
+        $ad = Ad::findOrFail($id);
+
+        // التأكد أن المستخدم هو صاحب الإعلان
+        if ($ad->user_id !== Auth::id()) {
+            return response()->json(['error' => 'غير مسموح بالحذف'], 403);
+        }
+
         $ad->delete();
 
-        return response()->json(['message' => 'Deleted']);
+        return response()->json(['message' => 'تم حذف الإعلان']);
     }
+
 }
