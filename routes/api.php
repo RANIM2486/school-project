@@ -18,6 +18,7 @@ use App\Http\Controllers\CurrentStudentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\ParentController;
+use App\Http\Controllers\FeeController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -194,6 +195,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/children/{studentId}/points', [ParentController::class, 'childPoints']);
     Route::get('/notifications', [ParentController::class, 'notifications']);
     Route::get('/ads', [ParentController::class, 'ads']);
+});
+//Accountant
+Route::middleware(['auth', 'role:accountant'])->group(function () {
+    // عرض كل الأقساط
+    Route::get('/fees', [FeeController::class, 'index']);
+
+    // إنشاء قسط جديد لجميع الطلاب في صف معين
+    Route::post('/fees', [FeeController::class, 'store']);
+        // دفع دفعة واحدة من القسط
+    Route::post('/installments/pay/{installmentId}', [FeeController::class, 'payInstallment']);
+
+    // حذف قسط مع دفعاته
+    Route::delete('/fees/{id}', [FeeController::class, 'destroy']);
 });
 
 });
