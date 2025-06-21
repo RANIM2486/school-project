@@ -65,8 +65,15 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
 
         // حذف علامة
         Route::delete('/{id}', [GuideController::class, 'deleteGrade']);
+
     });
 
+    // الإعلانات
+    Route::get('/ads', [AdController::class, 'index']);        // عرض كل الإعلانات
+    Route::get('/ads/{id}', [AdController::class, 'show']);    // عرض إعلان واحد
+    Route::post('/ads', [AdController::class, 'store']);       // إنشاء إعلان
+    Route::put('/ads/{id}', [AdController::class, 'update']);  // تعديل إعلان
+    Route::delete('/ads/{id}', [AdController::class, 'destroy']); // حذف إعلان
     //  تسجيل حضور
     Route::post('/attendance', [GuideController::class, 'addAttendance']);
 });
