@@ -9,6 +9,7 @@ class CommentSeeder extends Seeder
     {
         Comment::create([
             'student_id' => 1,
+            'teacher_id'=>5,
             'name' => 'ضعيف بالرياضيات',
             'date' => now(),
             'type' => 'إيجابية',

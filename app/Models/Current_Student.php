@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Current_Student extends Model
 {
     use HasFactory;
+    protected $table = 'current_students';
 
     protected $fillable = [
       'student_id',
@@ -24,7 +25,7 @@ class Current_Student extends Model
 
     public function Attendances()
     {
-        return $this->belongsTo(Attendance::class);
+        return $this->hasManyTo(Attendance::class);
     }
     public function class()
     {
