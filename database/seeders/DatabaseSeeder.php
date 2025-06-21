@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
     NotificationsSeeder::class,
     AdsSeeder::class,
     AttendancesSeeder::class,
+    BusSeeder::class,
+        BusStudentSeeder::class,
 
          ]);
     }

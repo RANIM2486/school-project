@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->enum('type', ['مدرسة', 'باص']);
             $table->enum('status', ['مدفوع', 'غير مدفوع']);

@@ -65,4 +65,8 @@ class student extends Model
     {
         return $this->hasOne(Current_Student::class);
     }
+    public function buses()
+{
+    return $this->belongsToMany(Bus::class, 'bus_student');
+}
 }
