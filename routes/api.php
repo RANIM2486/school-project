@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -43,26 +44,20 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->prefix('teacher')->group(fu
 
 // 🧭 Guide Routes
 Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(function () {
-
     //  إدارة الشعب
     Route::get('/sections', [GuideController::class, 'mySections']); // استعراض الشعب التي يشرف عليها المرشد
-    Route::get('/sections/{sectionId}/students', [GuideController::class, 'studentsInSection']); // طلاب شعبة محددة
 
+     Route::get('/sections/{sectionId}/students', [GuideController::class, 'studentsInSection']); // طلاب شعبة محددة
     //  إدارة العلامات
-    Route::prefix('grades')->group(function () {
-
+     Route::prefix('grades')->group(function () {
         // إضافة أو تعديل تلقائي (إنشاء إذا لا يوجد)
-        Route::post('/', [GuideController::class, 'addGrade']);
-
+         Route::post('/', [GuideController::class, 'addGrade']);
         // استعراض كل العلامات لطلاب المرشد
-        Route::get('/', [GuideController::class, 'getGrades']);
-
+         Route::get('/', [GuideController::class, 'getGrades']);
         // استعراض علامات طالب معين
-        Route::get('/student/{student_id}', [GuideController::class, 'showStudentGrades']);
-
+         Route::get('/student/{student_id}', [GuideController::class, 'showStudentGrades']);
         // تعديل سجل علامة موجود
-        Route::put('/{id}', [GuideController::class, 'updateGrade']);
-
+          Route::put('/{id}', [GuideController::class, 'updateGrade']);
         // حذف علامة
         Route::delete('/{id}', [GuideController::class, 'deleteGrade']);
     });
@@ -90,6 +85,7 @@ Route::middleware(['auth:sanctum', 'role:it'])->group(function () {
     Route::post('/students', [ITController::class, 'createStudent']);
     Route::patch('/students/{id}', [ITController::class, 'updateStudent']);
     Route::delete('/students/{id}', [ITController::class, 'deleteStudent']);
+
 });
 
 
@@ -188,5 +184,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [ParentController::class, 'notifications']);
     Route::get('/ads', [ParentController::class, 'ads']);
 });
+
+
 
 });

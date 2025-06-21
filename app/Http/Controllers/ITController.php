@@ -11,7 +11,7 @@ use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
-
+use App\Models\Bus;
 use App\Models\User;
 use App\Models\Section;
 use App\Models\Subject;
@@ -131,4 +131,44 @@ class ITController extends Controller
         $student->delete();
         return response()->json(['message' => 'تم حذف الطالب بنجاح']);
     }
+    public function createBus(Request $request)
+{
+    $validated = $request->validate([
+        'bus_number' => 'required|string|max:50',
+        'driver_name' => 'required|string|max:100',
+        'driver_phone' => 'required|string|max:20',
+        'capacity' => 'required|integer|min:1',
+    ]);
+
+    $bus = Bus::create($validated);
+    return response()->json([
+        'message' => 'تم إنشاء الباص بنجاح',
+        'data' => $bus
+    ], 201);
+}
+
+public function updateBus(Request $request, $id)
+{
+    $bus = Bus::findOrFail($id);
+
+    $validated = $request->validate([
+        'bus_number' => 'sometimes|string|max:50',
+        'driver_name' => 'sometimes|string|max:100',
+        'driver_phone' => 'sometimes|string|max:20',
+        'capacity' => 'sometimes|integer|min:1',
+    ]);
+
+    $bus->update($validated);
+    return response()->json([
+        'message' => 'تم تعديل بيانات الباص بنجاح',
+        'data' => $bus
+    ]);
+}
+
+public function deleteBus($id)
+{
+    $bus = Bus::findOrFail($id);
+    $bus->delete();
+    return response()->json(['message' => 'تم حذف الباص بنجاح']);
+}
 }

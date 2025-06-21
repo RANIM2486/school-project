@@ -16,5 +16,11 @@ class CurrentStudentSeeder extends Seeder
             'section_id' => 1,
             'status'=>'مستمر',
         ]);
+          Current_Student::create([
+            'student_id' => 2,
+            'class_id' => 1,
+            'section_id' => 1,
+            'status'=>'مستمر',
+        ]);
     }
 }
