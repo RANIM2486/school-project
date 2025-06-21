@@ -93,6 +93,10 @@ Route::middleware(['auth:sanctum', 'role:it'])->group(function () {
     Route::post('/students', [ITController::class, 'createStudent']);
     Route::patch('/students/{id}', [ITController::class, 'updateStudent']);
     Route::delete('/students/{id}', [ITController::class, 'deleteStudent']);
+ Route::post('/buses', [ITController::class, 'createBus']);
+    Route::patch('/buses/{id}', [ITController::class, 'updateBus']);
+    Route::delete('/buses/{id}', [ITController::class, 'deleteBus']);
+
 
 });
 
