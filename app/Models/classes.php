@@ -23,15 +23,11 @@ class classes extends Model
         return $this->hasMany(Section::class);
     }
 
-    // ؟؟؟؟؟غير موجود
-    // public function students()
-    // {
-    //     return $this->hasMany(Student::class, 'class_id');
-    // }
+
 
     public function currentStudents()
     {
-        return $this->hasMany(CurrentStudent::class, 'class_id');
+        return $this->hasMany(Current_Student::class, 'class_id');
     }
 }
 

@@ -12,7 +12,7 @@ class Attendance extends Model
     protected $fillable=['current_student_id','guide_id','attendance_date','status'];
     public function current_students()
 {
-    return $this->belongsTo(currentstudent::class);
+    return $this->belongsTo(current_student::class);
 }
 
 public function guide()

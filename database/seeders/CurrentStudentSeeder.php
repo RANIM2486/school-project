@@ -10,7 +10,7 @@ class CurrentStudentSeeder extends Seeder
 {
     public function run(): void
     {
-        currentStudent::create([
+        Current_Student::create([
             'student_id' => 1,
             'class_id' => 1,
             'section_id' => 1,
