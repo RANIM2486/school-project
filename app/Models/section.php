@@ -26,6 +26,6 @@ class section extends Model
 
     public function currentStudents()
     {
-        return $this->hasMany(CurrentStudent::class, 'section_id');
+        return $this->hasMany(Current_Student::class, 'section_id');
     }
 }

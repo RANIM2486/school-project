@@ -31,7 +31,7 @@ class classes extends Model
 
     public function currentStudents()
     {
-        return $this->hasMany(CurrentStudent::class, 'class_id');
+        return $this->hasMany(Current_Student::class, 'class_id');
     }
 }
 

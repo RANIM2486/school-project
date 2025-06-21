@@ -63,6 +63,6 @@ class student extends Model
     // السجلات كطالب حالي
     public function current ()
     {
-        return $this->hasOne(CurrentStudent::class);
+        return $this->hasOne(Current_Student::class);
     }
 }
