@@ -23,10 +23,6 @@ class DatabaseSeeder extends Seeder
             CurrentStudentSeeder::class,
             GradeSeeder::class,
             CommentSeeder::class,
-             FeesSeeder::class,
-    NotificationsSeeder::class,
-    AdsSeeder::class,
-    AttendancesSeeder::class,
 
          ]);
     }
