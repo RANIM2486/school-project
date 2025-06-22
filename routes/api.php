@@ -180,6 +180,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/classes', [ClassesController::class, 'index']);
     Route::get('/classes/{id}', [ClassesController::class, 'show']);
+    Route::get('/students/search/by-name', [StudentController::class, 'searchByName']);
 
     Route::get('/sections', [SectionController::class, 'index']); // للحصول على جميع الأقسام
     Route::get('/sections/{id}', [SectionController::class, 'show']); // للحصول على قسم محدد
