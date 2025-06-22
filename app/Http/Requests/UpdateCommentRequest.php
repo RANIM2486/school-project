@@ -18,7 +18,7 @@ class UpdateCommentRequest extends FormRequest
             'date' => 'sometimes|date',
             'type' => 'sometimes|in:إيجابية,سلبية,تحذير',
             'student_id' => 'sometimes|exists:students,id',
-            'teacher_id' => 'sometimes|exists:users,id',
+            'user_id' => 'sometimes|exists:users,id',
         ];
     }
  }

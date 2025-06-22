@@ -12,18 +12,10 @@ class section extends Model
         'class_id',
 
     ];
-
     public function class()
     {
         return $this->belongsTo(Classes::class, 'class_id');
     }
-
-    // ؟؟؟؟؟غير موجود
-   // public function students()
-    // {
-    //     return $this->hasMany(Student::class);
-    // }
-
     public function currentStudents()
     {
         return $this->hasMany(Current_Student::class, 'section_id');

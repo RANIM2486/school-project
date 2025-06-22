@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Section;
-use App\Models\Student;
 use App\Models\Grade;
 use App\Models\Ad;
 use App\Models\Point;
@@ -141,12 +140,12 @@ class GuideController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
+            'student_id' => 'required|exists:current_students,id',
             'status' => 'required|in:موجود,غير موجود',
             'attendance_date' => 'nullable|date',
         ]);
 
-        $student = Student::with('parent')->findOrFail($validated['student_id']);
+        $student = Current_Student::with('parent')->findOrFail($validated['student_id']);
 
         if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -174,7 +173,7 @@ class GuideController extends Controller
     // دالة مساعدة: تحقق إن الطالب ضمن شعب الموجه
     private function isStudentInGuideSections($studentId, $guideId)
     {
-        return Student::where('id', $studentId)
+        return Current_Student::where('id', $studentId)
             ->whereHas('section', function ($query) use ($guideId) {
                 $query->where('guide_id', $guideId);
             })->exists();
@@ -182,7 +181,7 @@ class GuideController extends Controller
 
     private function getGuideStudentIds($guideId)
     {
-        return Student::whereHas('section', function ($query) use ($guideId) {
+        return Current_Student::whereHas('section', function ($query) use ($guideId) {
             $query->where('guide_id', $guideId);
         })->pluck('id');
     }
