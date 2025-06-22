@@ -28,4 +28,8 @@ class Grade extends Model
     {
         return $this->belongsTo(Subject::class);
     }
+    public function guide()
+    {
+        return $this->belongsTo(User::class, 'guide_id');
+    }
 }
