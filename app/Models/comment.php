@@ -13,7 +13,7 @@ class comment extends Model
         'date',
         'type',
         'student_id',
-        'teacher_id'
+        'user_id'
     ];
 
     public function student()
@@ -23,7 +23,7 @@ class comment extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'teacher_id');
+        return $this->belongsTo(User::class);
     }
 
 

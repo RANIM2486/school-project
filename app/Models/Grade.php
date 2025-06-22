@@ -19,9 +19,9 @@ class Grade extends Model
         'date',
     ];
 
-   public function student()
+   public function currentstudents()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(current_student::class);
     }
 
     public function subject()

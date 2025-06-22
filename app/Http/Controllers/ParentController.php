@@ -44,13 +44,6 @@ class ParentController extends Controller
     // استعراض كل الإشعارات
     public function notifications()
     {
-        // // جلب كل الطلاب للأب الحالي
-        // $studentIds = Student::where('parent_id', Auth::id())->pluck('id');
-
-        // // جلب الإشعارات الخاصة فقط بأولاده
-        // $notifications = Notification::whereIn('student_id', $studentIds)->get();
-
-        // return response()->json($notifications);
          $notifications = Notification::where('user_id', Auth::id())
             ->orderByDesc('created_at')
             ->get();

@@ -22,7 +22,11 @@ class Current_Student extends Model
     {
         return $this->belongsTo(Student::class);
     }
-
+    // العلاقة مع ولي الأمر
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
     public function Attendances()
     {
         return $this->hasManyTo(Attendance::class);
