@@ -10,52 +10,56 @@ class UsersSeeder extends Seeder
 {
     public function run(): void
     {
-        // مدير
-        User::create([
-            'name' => 'مدير المدرسة',
-            'email' => 'admin@school.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
+        // // مدير
+        // User::create([
+        //     'name' => 'مدير المدرسة',
+        //     'email' => 'admin@school.com',
+        //     'password' => Hash::make('password'),
+        //     'role' => 'admin',
+        // ]);
 
-        // معلم
-        User::create([
-            'name' => 'أحمد المعلم',
-            'email' => 'teacher@school.com',
-            'password' => Hash::make('password'),
-            'role' => 'teacher',
-        ]);
+        // // معلم
+        // User::create([
+        //     'name' => 'أحمد المعلم',
+        //     'email' => 'teacher@school.com',
+        //     'password' => Hash::make('password'),
+        //     'role' => 'teacher',
+        // ]);
 
-        // موجه
-        User::create([
-            'name' => 'مروان الموجه',
-            'email' => 'guide@school.com',
-            'password' => Hash::make('password'),
-            'role' => 'guid',
-        ]);
+        // // موجه
+        // User::create([
+        //     'name' => 'مروان الموجه',
+        //     'email' => 'guide@school.com',
+        //     'password' => Hash::make('password'),
+        //     'role' => 'guid',
+        // ]);
 
-        // محاسب
-        User::create([
-            'name' => 'ليلى المحاسبة',
-            'email' => 'accountant@school.com',
-            'password' => Hash::make('password'),
-            'role' => 'accountant',
-        ]);
+        // // محاسب
+        // User::create([
+        //     'name' => 'ليلى المحاسبة',
+        //     'email' => 'accountant@school.com',
+        //     'password' => Hash::make('password'),
+        //     'role' => 'accountant',
+        // ]);
 
-        // ولي أمر
-        User::create([
-            'name' => 'خالد ولي الأمر',
-            'email' => 'parent@school.com',
-            'password' => Hash::make('password'),
-            'role' => 'parent',
-        ]);
+        // // ولي أمر
+        // User::create([
+        //     'name' => 'خالد ولي الأمر',
+        //     'email' => 'parent@school.com',
+        //     'password' => Hash::make('password'),
+        //     'role' => 'parent',
+        // ]);
 
         // مسؤول IT
-        User::create([
+       $user= User::create([
             'name' => 'زياد IT',
             'email' => 'it@school.com',
             'password' => Hash::make('password'),
             'role' => 'it',
         ]);
+
+        // توليد توكن خاص بالمستخدم
+        $token = $user->createToken('auth_token')->plainTextToken;
+
     }
 }
