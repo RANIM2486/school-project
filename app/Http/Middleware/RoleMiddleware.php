@@ -39,8 +39,7 @@ class RoleMiddleware
     }
 
     return response()->json(['message' => 'Forbidden'], 403);
-}
-
+ }
 
 }
 

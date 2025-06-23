@@ -75,12 +75,17 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
 });
 
 // 🧑‍💻 IT Routes
+
+    Route::post('/users', [ITController::class, 'createUser']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
  Route::post('/users', [ITController::class, 'createUser']);});
 Route::middleware(['auth:sanctum', 'role:it'])->group(function () {
    // Route::post('/users', [ITController::class, 'createUser']);
+ main
 
-    Route::post('/classes', [ITController::class, 'createClass']);
+    Route::post('/classes', [ITController::class, 'createClass'])
+->middleware(['auth:sanctum','role:it']);;
      Route::patch('/classes/{id}', [ITController::class, 'updateClass']);
     Route::delete('/classes/{id}', [ITController::class, 'deleteClass']);
 
@@ -92,15 +97,20 @@ Route::middleware(['auth:sanctum', 'role:it'])->group(function () {
     Route::patch('/subjects/{id}', [ITController::class, 'updateSubject']);
     Route::delete('/subjects/{id}', [ITController::class, 'deleteSubject']);
 
-    Route::post('/students', [ITController::class, 'createStudent']);
-    Route::patch('/students/{id}', [ITController::class, 'updateStudent']);
-    Route::delete('/students/{id}', [ITController::class, 'deleteStudent']);
- Route::post('/buses', [ITController::class, 'createBus']);
-    Route::patch('/buses/{id}', [ITController::class, 'updateBus']);
-    Route::delete('/buses/{id}', [ITController::class, 'deleteBus']);
+    Route::post('/students', [ITController::class, 'createStudent'])
+->middleware(['auth:sanctum','role.check:it']);;
+    Route::patch('/students/{id}', [ITController::class, 'updateStudent'])
+->middleware(['auth:sanctum','role.check:it']);;
+    Route::delete('/students/{id}', [ITController::class, 'deleteStudent'])
+->middleware(['auth:sanctum','role.check:it']);;
+ Route::post('/buses', [ITController::class, 'createBus'])
+->middleware(['auth:sanctum','role.check:it']);;
+    Route::patch('/buses/{id}', [ITController::class, 'updateBus'])
+->middleware(['auth:sanctum','role.check:it']);;
+    Route::delete('/buses/{id}', [ITController::class, 'deleteBus'])
+->middleware(['auth:sanctum','role.check:it']);;
 
 
-});
 
 
 // 👑 Admin Routes
