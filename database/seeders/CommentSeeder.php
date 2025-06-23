@@ -7,12 +7,12 @@ class CommentSeeder extends Seeder
 {
     public function run(): void
     {
-        Comment::create([
-            'student_id' => 1,
-            'teacher_id'=>5,
-            'name' => 'ضعيف بالرياضيات',
-            'date' => now(),
-            'type' => 'إيجابية',
-        ]);
+        // Comment::create([
+        //     'student_id' => 1,
+        //     'user_id'=>1,
+        //     'name' => 'ضعيف بالرياضيات',
+        //     'date' => now(),
+        //     'type' => 'إيجابية',
+        // ]);
     }
 }

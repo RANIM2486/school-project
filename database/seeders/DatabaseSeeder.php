@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
     AttendancesSeeder::class,
     BusSeeder::class,
         BusStudentSeeder::class,
-
+ReasonSeeder::class
          ]);
     }
 }

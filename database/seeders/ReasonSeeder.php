@@ -15,11 +15,11 @@ class ReasonSeeder extends Seeder
     {
 
         $reasons = [
-            ['text' => 'مساعدة زميل', 'value' => 5, 'type' => 'موجب'],
-            ['text' => 'تأخر عن الحصة', 'value' => -3, 'type' => 'سالب'],
-            ['text' => 'سلوك عدواني', 'value' => -10, 'type' => 'سالب'],
-            ['text' => 'تنظيف الصف', 'value' => 4, 'type' => 'موجب'],
-            ['text' => 'إزعاج داخل الصف', 'value' => -2, 'type' => 'سالب'],
+            ['name' => 'مساعدة زميل', 'value' => 5, 'type' => 'موجب'],
+            ['name' => 'تأخر عن الحصة', 'value' => -3, 'type' => 'سالب'],
+            ['name' => 'سلوك عدواني', 'value' => -10, 'type' => 'سالب'],
+            ['name' => 'تنظيف الصف', 'value' => 4, 'type' => 'موجب'],
+            ['name' => 'إزعاج داخل الصف', 'value' => -2, 'type' => 'سالب'],
                     ];
 
         foreach ($reasons as $reason) {
