@@ -27,7 +27,7 @@ class RoleMiddleware
     }
 
     // إضافة ديباغ
-    log::info('User role:', ['role' => $user->role]);
+    Log::info('User role:', ['role' => $user->role]);
 
     $userRoles = array_map('trim', explode(',', strtolower($user->role)));
     $requiredRoles = array_map('trim', explode(',', strtolower($roles)));

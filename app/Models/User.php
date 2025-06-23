@@ -50,11 +50,10 @@ class User extends Authenticatable
         ];
     }
 
-    public function section()
+    public function sections()
     {
-        return $this->hasOne(Section::class);
+        return $this->hasMany(Section::class, 'guide_id');
     }
-
 
     public function children()
     {

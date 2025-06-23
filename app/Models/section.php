@@ -10,11 +10,16 @@ class section extends Model
     protected $fillable = [
         'name',
         'class_id',
-
+        'guide_id',
+        'teacher_id'
     ];
     public function class()
     {
         return $this->belongsTo(Classes::class, 'class_id');
+    }
+    public function guide()
+    {
+        return $this->belongsTo(User::class, 'guide_id');
     }
     public function currentStudents()
     {
