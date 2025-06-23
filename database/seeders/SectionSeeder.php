@@ -11,6 +11,7 @@ class SectionSeeder extends Seeder
         Section::create([
             'name' => 'الشعبة أ',
             'class_id' => 1,
+            'guide_id' =>2,
             'teacher_id'=>1
         ]);
     }

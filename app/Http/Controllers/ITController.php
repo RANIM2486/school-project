@@ -19,17 +19,21 @@ use App\Models\Classe; // تأكدي من اسم المودل إذا اسمه Cl
 use App\Models\classes;
 use App\Models\student;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class ITController extends Controller
 {
     // 🧑‍💻 إنشاء حساب مستخدم (ما عدا المدير)
     public function createUser(Request $request)
     {
+         if (Auth::user() && Auth::user()->role !== 'it') {
+            return response()->json(['message' => 'ليس لديك الصلاحيات لإنشاء حسابات'], 403);
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'role' => 'required|in:student,teacher,guide,it',
+            'role' => 'required|in:admin,teacher,guide,it,parent,accountant',
         ]);
 
         $user = User::create([

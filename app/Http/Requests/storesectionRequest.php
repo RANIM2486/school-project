@@ -17,6 +17,8 @@ class StoreSectionRequest extends FormRequest
             'name' => 'required|string|max:255',
             'class_id' => 'required|exists:classes,id',
             'guide_id' => 'nullable|exists:users,id',
+            'teacher_id' => 'nullable|exists:users,id',
+
         ];
     }
 }

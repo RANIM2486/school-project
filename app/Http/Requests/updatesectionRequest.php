@@ -17,6 +17,7 @@ class UpdateSectionRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'class_id' => 'sometimes|exists:classes,id',
             'guide_id' => 'nullable|exists:users,id',
+            'teacher_id' => 'nullable|exists:users,id',
         ];
     }
 }
