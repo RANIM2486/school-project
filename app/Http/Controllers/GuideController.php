@@ -20,6 +20,9 @@ class GuideController extends Controller
     // استعراض الشعب التي يشرف عليها الموجه
     public function mySections()
     {
+        // if (Auth::user() && Auth::user()->role !== 'guide') {
+        //     return response()->json(['message' => ''], 403);
+        // }
         $user = Auth::user();
         $sections = Section::where('guide_id', $user->id)->get();
         return response()->json($sections);
@@ -28,6 +31,9 @@ class GuideController extends Controller
     // استعراض الطلاب في شعبة معينة
     public function studentsInSection($sectionId)
     {
+        // if (Auth::user() && Auth::user()->role !== 'guide') {
+        //     return response()->json(['message' => ''], 403);
+        // }
         $user = Auth::user();
         $section = Section::where('id', $sectionId)
             ->where('guide_id', $user->id)
@@ -39,6 +45,7 @@ class GuideController extends Controller
     // إدخال علامة لطالب
     public function addGrade(Request $request)
     {
+
         $user = Auth::user();
         $validated = $request->validate([
             'student_id'   => 'required|exists:current_students,id',
