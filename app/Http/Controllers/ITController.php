@@ -138,10 +138,9 @@ class ITController extends Controller
     public function createBus(Request $request)
 {
     $validated = $request->validate([
-        'bus_number' => 'required|string|max:50',
         'driver_name' => 'required|string|max:100',
-        'driver_phone' => 'required|string|max:20',
-        'capacity' => 'required|integer|min:1',
+        'area' => 'required|string|max:20',
+        'phone' => 'required|integer|min:1',
     ]);
 
     $bus = Bus::create($validated);
@@ -156,10 +155,9 @@ public function updateBus(Request $request, $id)
     $bus = Bus::findOrFail($id);
 
     $validated = $request->validate([
-        'bus_number' => 'sometimes|string|max:50',
         'driver_name' => 'sometimes|string|max:100',
-        'driver_phone' => 'sometimes|string|max:20',
-        'capacity' => 'sometimes|integer|min:1',
+        'area' => 'sometimes|string|max:20',
+        'phone' => 'sometimes|integer|min:1',
     ]);
 
     $bus->update($validated);
