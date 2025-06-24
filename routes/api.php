@@ -76,13 +76,8 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
 
 // 🧑‍💻 IT Routes
 
-    Route::post('/users', [ITController::class, 'createUser']);
-
-Route::middleware(['auth:sanctum'])->group(function () {
-
-  // Route::post('/users', [ITController::class, 'createUser']);
 Route::middleware(['auth:sanctum', 'role:it'])->group(function () {
-Route::post('/users', [ITController::class, 'createUser']);});
+Route::post('/users', [ITController::class, 'createUser']);
 
     Route::post('/classes', [ITController::class, 'createClass']);
      Route::patch('/classes/{id}', [ITController::class, 'updateClass']);
