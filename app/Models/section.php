@@ -25,4 +25,9 @@ class section extends Model
     {
         return $this->hasMany(Current_Student::class, 'section_id');
     }
+    public function subjectTeachers()
+{
+    return $this->hasMany(SubjectTeacher::class);
+}
+
 }

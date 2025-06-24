@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Point extends Model
 {
-    protected $fillable=['student_id','teacher_id','reason_id'];
-    public function student()
+    protected $fillable=['current_student_id','teacher_id','reason_id'];
+    public function currentstudent()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(current_Student::class);
     }
 
     public function teacher()

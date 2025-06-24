@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('current_students')->onDelete('cascade');
+            $table->foreignId('current_student_id')->constrained('current_students')->onDelete('cascade');
             $table->foreignId('guide_id')->constrained('users')->onDelete('cascade');
             $table->date('attendance_date');
             $table->enum('status', ['موجود', 'غير موجود']);

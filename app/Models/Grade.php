@@ -17,11 +17,12 @@ class Grade extends Model
         'quiz',
         'final_exam',
         'date',
+        'guid_id'
     ];
 
-   public function currentstudents()
+   public function students()
     {
-        return $this->belongsTo(current_student::class);
+        return $this->belongsTo(student::class);
     }
 
     public function subject()
@@ -30,6 +31,6 @@ class Grade extends Model
     }
     public function guide()
     {
-        return $this->belongsTo(User::class, 'guide_id');
+        return $this->belongsTo(User::class, 'guid_id');
     }
 }

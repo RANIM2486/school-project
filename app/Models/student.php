@@ -54,11 +54,8 @@ class student extends Model
         return $this->hasMany(Grade::class);
     }
 
-    // الملاحظات التابعة للطالب
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
+
+
 
     // السجلات كطالب حالي
     public function current ()

@@ -32,13 +32,13 @@ class SubjectTeacher extends Model
     // العلاقة مع الصف الدراسي
     public function classModel() // تم تغيير اسم العلاقة
     {
-        return $this->belongsTo(Classes::class, 'class_id');
+        return $this->belongsTo(Classes::class);
     }
 
     // العلاقة مع المعلم
     public function teacher()
     {
-        return $this->belongsTo(User::class, 'teacher_id');
+        return $this->belongsTo(User::class);
     }
 }
 

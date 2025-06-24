@@ -22,8 +22,10 @@ class classes extends Model
     {
         return $this->hasMany(Section::class);
     }
-
-
+public function subjectTeachers()
+{
+    return $this->hasMany(SubjectTeacher::class);
+}
 
     public function currentStudents()
     {

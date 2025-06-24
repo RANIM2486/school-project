@@ -18,7 +18,7 @@ class subject extends Model
         'exam2',
         'exam3',
         'final_exam',
-
+        'teacher_id'
     ];
 
 
@@ -26,5 +26,13 @@ class subject extends Model
     {
         return $this->hasMany(Grade::class);
     }
+     public function teachers()
+{
+    return $this->belongsToMany(User::class, 'subject_teacher');
 }
+    public function sections()
+{
+    return $this->belongsToMany(Section::class, 'subject_teacher');
 
+}
+}

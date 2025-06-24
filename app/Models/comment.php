@@ -12,13 +12,13 @@ class comment extends Model
         'name',
         'date',
         'type',
-        'student_id',
+        'current_student_id',
         'user_id'
     ];
 
-    public function student()
+    public function current_student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(current_Student::class);
     }
 
     public function user()
