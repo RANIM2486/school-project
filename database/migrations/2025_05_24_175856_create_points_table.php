@@ -13,7 +13,7 @@ class CreatePointsTable extends Migration
     {
         Schema::create('points', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('current_students')->onDelete('cascade');
+            $table->foreignId('current_student_id')->constrained('current_students')->onDelete('cascade');
 
             // علاقات
             $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');

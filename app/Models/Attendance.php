@@ -10,7 +10,7 @@ class Attendance extends Model
 {
     use HasFactory;
     protected $fillable=['current_student_id','guide_id','attendance_date','status'];
-    public function current_students()
+    public function current_student()
 {
     return $this->belongsTo(current_student::class);
 }
