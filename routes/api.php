@@ -95,7 +95,6 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
     Route::delete('/subjects/{id}', [ITController::class, 'deleteSubject']);
 
     Route::post('/students', [ITController::class, 'createStudent']);
-
     Route::patch('/students/{id}', [ITController::class, 'updateStudent']);
 
     Route::delete('/students/{id}', [ITController::class, 'deleteStudent']);
@@ -129,12 +128,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/classes', [ClassesController::class, 'index']);
     Route::get('/classes/{id}', [ClassesController::class, 'show']);
 
-    // Students
-    Route::get('/students', [StudentController::class, 'index']);
-    Route::post('/students', [StudentController::class, 'store']);
-    Route::get('/students/{id}', [StudentController::class, 'show']);
-    Route::put('/students/{id}', [StudentController::class, 'update']);
-    Route::delete('/students/{id}', [StudentController::class, 'destroy']);
+
     //current _Students
     Route::apiResource('current-students', CurrentStudentController::class);
     Route::get('/count/active', [CurrentStudentController::class, 'countActive']);

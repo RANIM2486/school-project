@@ -25,7 +25,7 @@ class StoreStudentRequest extends FormRequest
             'class_id' => 'required|exists:classes,id',
             'section_id' => 'required|exists:sections,id',
             'parent_id' => 'required|exists:users,id',
-           ' user_id' => 'required|exists:users,id',
+          // 'user_id' => 'required|exists:users,id',
         ];
     }
 }

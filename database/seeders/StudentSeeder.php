@@ -18,7 +18,7 @@ class StudentSeeder extends Seeder
     //'national_id' => '1234567890',
     'address' => '123 Main St',
     'entry_date' => now(),
-    'student_id' => 1, // تأكد من تضمين user_id
+   'user_id' => 1, // تأكد من تضمين user_id
     'parent_id' => 1,
     'class_id' => 1,
     'section_id' => 1,
@@ -33,7 +33,7 @@ class StudentSeeder extends Seeder
     //'national_id' => '1234567890',
     'address' => '123 Main St',
     'entry_date' => now(),
-    'student_id' => 2, // تأكد من تضمين user_id
+    'user_id' => 2, // تأكد من تضمين user_id
     'parent_id' => 1,
     'class_id' => 1,
     'section_id' => 1,

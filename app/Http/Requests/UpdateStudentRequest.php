@@ -25,7 +25,7 @@ class UpdateStudentRequest extends FormRequest
             'class_id' => 'sometimes|exists:classes,id',
             'section_id' => 'sometimes|exists:sections,id',
             'parent_id' => 'sometimes|exists:users,id',
-            ' user_id' => 'required|exists:users,id',
+           // ' user_id' => 'required|exists:users,id',
         ];
     }
 }
