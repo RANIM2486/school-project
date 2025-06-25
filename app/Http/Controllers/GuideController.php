@@ -57,6 +57,7 @@ class GuideController extends Controller
             'final_exam'   => 'nullable|numeric|min:0|max:100',
             'date'         => 'nullable|date',
         ]);
+        $validated["guide_id"]=$user->id;
 
         if (!$this->isStudentInGuideSections($validated['student_id'], $user->id)) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -103,7 +104,7 @@ class GuideController extends Controller
             'final_exam'   => 'nullable|numeric|min:0|max:100',
             'date'         => 'nullable|date',
         ]);
-
+        $validated["guide_id"]=$user->id;
         $grade = Grade::findOrFail($id);
 
         if (!$this->isStudentInGuideSections($grade->student_id, $user->id)) {

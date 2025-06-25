@@ -6,17 +6,11 @@ namespace Database\Seeders;
 
 use App\Models\classes;
 use Illuminate\Database\Seeder;
-use App\Models\SchoolClass;
 
 class ClassesSeeder extends Seeder
 {
     public function run(): void
     {
-        classes::create([
-            'level' => 'الصف الأول',
-            'name' => 'الابتدائية',
-            'students_count' => 30,
-            'fees' => 100000,
-        ]);
+       classes::factory()->count(20)->create();
     }
 }

@@ -65,18 +65,18 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
     });
 
     // الإعلانات
-    Route::get('/ads', [AdController::class, 'index']);        // عرض كل الإعلانات
-    Route::get('/ads/{id}', [AdController::class, 'show']);    // عرض إعلان واحد
-    Route::post('/ads', [AdController::class, 'store']);       // إنشاء إعلان
-    Route::put('/ads/{id}', [AdController::class, 'update']);  // تعديل إعلان
-    Route::delete('/ads/{id}', [AdController::class, 'destroy']); // حذف إعلان
-    //  تسجيل حضور
-    Route::post('/attendance', [GuideController::class, 'addAttendance']);
+    // Route::get('/ads', [AdController::class, 'index']);        // عرض كل الإعلانات
+    // Route::get('/ads/{id}', [AdController::class, 'show']);    // عرض إعلان واحد
+    // Route::post('/ads', [AdController::class, 'store']);       // إنشاء إعلان
+    // Route::put('/ads/{id}', [AdController::class, 'update']);  // تعديل إعلان
+    // Route::delete('/ads/{id}', [AdController::class, 'destroy']); // حذف إعلان
+    // //  تسجيل حضور
+    // Route::post('/attendance', [GuideController::class, 'addAttendance']);
 });
 
 // 🧑‍💻 IT Routes
 
-<
+
  Route::middleware(['auth:sanctum','role:it'])->group(function () {
 
     Route::post('/users', [ITController::class, 'createUser']);
@@ -165,16 +165,20 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     //ADS
     Route::middleware(['auth:sanctum', 'role:guide'])->group(function () {
-    Route::get('/ads', [AdController::class, 'index']);
+
     Route::post('/ads', [AdController::class, 'store']);
-    Route::put('/ads', [AdController::class, 'update']);
-    Route::delete('/ads', [AdController::class, 'destroy']);
+    Route::get('/ads', [AdController::class, 'index']); /// مشكلة
+    Route::get('/ads/{id}', [AdController::class, 'show']);
+    Route::put('/ads/{id}', [AdController::class, 'update']);
+    Route::delete('/ads/{id}', [AdController::class, 'destroy']);
     //notifications
-    Route::get('/notifications', [NotificationController::class, 'index']);
-    Route::post('/notifications', [NotificationController::class, 'store']);
-    Route::put('/notifications', [NotificationController::class, 'update']);
-    Route::delete('/notifications', [NotificationController::class, 'destroy']);
+    // Route::get('/notifications', [NotificationController::class, 'index']);
+    // Route::post('/notifications', [NotificationController::class, 'store']);
+    // Route::put('/notifications', [NotificationController::class, 'update']);
+    // Route::delete('/notifications', [NotificationController::class, 'destroy']);
 });
+    // Route::middleware(['auth:sanctum', 'role:guide,parent'])->group(function () {
+    // Route::get('/ads', [AdController::class, 'index']);});
 
     Route::middleware(['auth', 'can:view-students'])->group(function () {
     Route::get('/students', [StudentController::class, 'index']);
