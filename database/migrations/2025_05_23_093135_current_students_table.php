@@ -16,7 +16,7 @@ return new class extends Migration
     $table->enum('status', ['مستمر', 'مغادر', 'مؤجل']); // حالة الطالب
 
 
-    $table->foreignId('student_id')->constrained('current_students')->onDelete('cascade'); // الطالب المرتبط
+    $table->foreignId('student_id')->constrained('students')->onDelete('cascade'); // الطالب المرتبط
     $table->foreignId('class_id')->constrained('classes')->onDelete('cascade'); // الصف المرتبط
     $table->foreignId('section_id')->constrained('sections')->onDelete('cascade'); // الشعبة المرتبطة
     $table->timestamps();

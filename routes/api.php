@@ -120,7 +120,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(functi
 // 👤 Public (Authenticated) Routes
 Route::middleware('auth:sanctum')->group(function () {
      //current _Students
-    Route::apiResource('current-students', CurrentStudentController::class);
+    Route::get('current-students', [CurrentStudentController::class,'index']);
+    Route::get('current-students/{student_id}', [CurrentStudentController::class,'show']);
     Route::get('/count/active', [CurrentStudentController::class, 'countActive']);
     Route::get('/count/postponed', [CurrentStudentController::class, 'countPostponed']);
     Route::get('/count/left', [CurrentStudentController::class, 'countLeft']);
@@ -134,7 +135,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/comments/{id}', [CommentController::class, 'show']);
     Route::put('/comments/{id}', [CommentController::class, 'update']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);});
-    
+
 
 
     // Points (عرض فقط)
@@ -162,14 +163,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::put('/notifications', [NotificationController::class, 'update']);
     // Route::delete('/notifications', [NotificationController::class, 'destroy']);
 });
-<<<<<<< db_user1
+
     // Route::middleware(['auth:sanctum', 'role:guide,parent'])->group(function () {
     // Route::get('/ads', [AdController::class, 'index']);});
 
-    Route::middleware(['auth', 'can:view-students'])->group(function () {
-=======
- Route::middleware(['auth:sanctum', 'can:view-students'])->group(function () {
->>>>>>> main
+ Route::middleware(['auth:sanctum', 'role:guide'])->group(function () {
+
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('/students/{id}', [StudentController::class, 'show']);
     Route::get('/students/search/by-name', [StudentController::class, 'searchByName']);
@@ -208,6 +207,7 @@ Route::middleware(['auth', 'role:accountant'])->group(function () {
     Route::delete('/fees/{id}', [FeeController::class, 'destroy']);
 });
 
-
-
 });
+
+
+

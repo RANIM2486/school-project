@@ -10,44 +10,43 @@ use App\Models\Current_Student;
 
 class CurrentStudentController extends Controller
 {
-    public function store(StoreCurrentStudentRequest $request)
-    {
-        // إنشاء الطالب الحالي باستخدام create
-        $currentStudent = Current_Student::create([
-            'student_id' => $request->student_id,
-            'section_id' => $request->section_id,
-            'semester_id' => $request->semester_id,
-            'class_id' => $request->class_id,
-            'status' => $request->status,
-        ]);
+    // public function store(StoreCurrentStudentRequest $request)
+    // {
+    //     // إنشاء الطالب الحالي باستخدام create
+    //     $currentStudent = Current_Student::create([
+    //         'student_id' => $request->student_id,
+    //         'section_id' => $request->section_id,
+    //         'class_id' => $request->class_id,
+    //         'status' => $request->status,
+    //     ]);
 
-        // تحديث عدد الطلاب في الصف
-        $class = classes::find($request->class_id);
-        $class->student_count += 1;
-        $class->save();
+    //     // تحديث عدد الطلاب في الصف
+    //     $class = classes::find($request->class_id);
+    //     $class->student_count += 1;
+    //     $class->save();
 
-        return response()->json([
-            'message' => 'تمت إضافة الطالب بنجاح',
-            'data' => $currentStudent
-        ], 201);
-    }
+    //     return response()->json([
+    //         'message' => 'تمت إضافة الطالب بنجاح',
+    //         'data' => $currentStudent
+    //     ], 201);
+    // }
 
-    public function destroy($id)
-    {
-        $currentStudent = Current_Student::findOrFail($id);
-        $class =classes::find($currentStudent->class_id);
+    // public function destroy($id)
+    // {
+    //     $currentStudent = Current_Student::findOrFail($id);
+    //     $class =classes::find($currentStudent->class_id);
 
-        // حذف الطالب
-        $currentStudent->delete();
+    //     // حذف الطالب
+    //     $currentStudent->delete();
 
-        // تقليل عدد الطلاب في الصف
-        if ($class && $class->student_count > 0) {
-            $class->student_count -= 1;
-            $class->save();
-        }
+    //     // تقليل عدد الطلاب في الصف
+    //     if ($class && $class->student_count > 0) {
+    //         $class->student_count -= 1;
+    //         $class->save();
+    //     }
 
-        return response()->json(['message' => 'تم حذف الطالب الحالي بنجاح']);
-    }
+    //     return response()->json(['message' => 'تم حذف الطالب الحالي بنجاح']);
+    // }
 
     public function index()
     {
