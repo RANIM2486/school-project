@@ -123,14 +123,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/count/section/{sectionId}', [CurrentStudentController::class, 'countBySection']);
 
     // Comments
-    Route::middleware(['auth:sanctum', 'role:teacher|guide'])->group(function () {
+    Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {
     Route::get('/comments', [CommentController::class, 'index']);
     Route::post('/comments', [CommentController::class, 'store']);
     Route::get('/comments/{id}', [CommentController::class, 'show']);
     Route::put('/comments/{id}', [CommentController::class, 'update']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);});
-    
-
 
     // Points (عرض فقط)
     Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {
@@ -155,17 +153,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/notifications', [NotificationController::class, 'update']);
     Route::delete('/notifications', [NotificationController::class, 'destroy']);
 });
- Route::middleware(['auth:sanctum', 'can:view-students'])->group(function () {
+
+    Route::middleware(['auth', 'can:view-students'])->group(function () {
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('/students/{id}', [StudentController::class, 'show']);
-    Route::get('/students/search/by-name', [StudentController::class, 'searchByName']);
 });
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/classes', [ClassesController::class, 'index']);
     Route::get('/classes/{id}', [ClassesController::class, 'show']);
-
+    Route::get('/students/search/by-name', [StudentController::class, 'searchByName']);
 
     Route::get('/sections', [SectionController::class, 'index']); // للحصول على جميع الأقسام
     Route::get('/sections/{id}', [SectionController::class, 'show']); // للحصول على قسم محدد
