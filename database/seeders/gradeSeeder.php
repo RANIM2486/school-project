@@ -10,7 +10,7 @@ class GradeSeeder extends Seeder
         Grade::create([
             'student_id' => 1,
             'subject_id' => 1,
-            'guid_id'=>1,
+            'guid_id'=>4,
             'exam1' => 9,
             'exam2' => 8,
             'exam3' => 10,

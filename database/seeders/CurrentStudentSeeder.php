@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Current_Student;
 use Illuminate\Database\Seeder;
-use App\Models\CurrentStudent;
 
 class CurrentStudentSeeder extends Seeder
 {

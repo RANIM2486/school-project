@@ -26,9 +26,9 @@ class ITController extends Controller
     // 🧑‍💻 إنشاء حساب مستخدم (ما عدا المدير)
     public function createUser(Request $request)
     {
-         if (Auth::user() && Auth::user()->role !== 'it') {
-            return response()->json(['message' => 'ليس لديك الصلاحيات لإنشاء حسابات'], 403);
-        }
+         if ( Auth::user()->role === 'it') {
+
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -43,7 +43,9 @@ class ITController extends Controller
             'role' => $validated['role'],
         ]);
 
-        return response()->json($user, 201);
+        return response()->json($user, 201);}
+
+        return response()->json(['message' => 'ليس لديك الصلاحيات لإنشاء حسابات'], 403);
     }
 
     // 🏫 الشعب

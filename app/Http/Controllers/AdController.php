@@ -74,12 +74,12 @@ class AdController extends Controller
 
         // التأكد أن المستخدم هو صاحب الإعلان
         if ($ad->user_id !== Auth::id()) {
-            return response()->json(['error' => 'غير مسموح بالحذف'], 403);
+            return response()->json(['error' => "غير مسموح بالحذف"], 403);
         }
 
         $ad->delete();
 
-        return response()->json(['message' => 'تم حذف الإعلان']);
+        return response()->json(['message' => "تم حذف الإعلان"]);
     }
 
 }

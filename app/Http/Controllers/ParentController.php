@@ -52,9 +52,10 @@ class ParentController extends Controller
     }
 
     // استعراض كل الإعلانات
-    public function ads()
+   public function ads()
     {
-        return response()->json(Ad::all());
+        $ads = Ad::with('user:id,name')->latest()->get();
+        return response()->json($ads);
     }
 
     // حماية: تحقق أن الطالب يعود لهذا الأب
