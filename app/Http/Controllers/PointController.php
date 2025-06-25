@@ -14,7 +14,7 @@ class PointController extends Controller
     public function index()
     {
         try {
-            return Point::with(['student', 'teacher', 'reason'])->get();
+            return Point::with(['currentStudent.student', 'teacher', 'reason'])->get();
         } catch (\Exception $e) {
             return response()->json(['message' => 'خطأ أثناء جلب البيانات', 'error' => $e->getMessage()], 500);
         }
@@ -26,17 +26,17 @@ class PointController extends Controller
             $user = Auth::user(); // فقط للحصول على ID المعلم الحالي
 
             $validated = $request->validate([
-                'student_id' => 'required|exists:students,id',
+                'current_student_id' => 'required|exists:students,id',
                 'reason_id' => 'required|exists:reasons,id',
             ]);
 
             $point = Point::create([
-                'student_id' => $validated['student_id'],
+                'current_student_id' => $validated['current_student_id'],
                 'teacher_id' => $user->id,
                 'reason_id' => $validated['reason_id'],
             ]);
 
-            return response()->json($point->load(['student', 'teacher', 'reason']), 201);
+            return response()->json($point->load(['currentStudent.student', 'teacher', 'reason']), 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['message' => 'التحقق من البيانات فشل', 'errors' => $e->errors()], 422);
@@ -48,7 +48,7 @@ class PointController extends Controller
     public function show($id)
     {
         try {
-            $point = Point::with(['student', 'teacher', 'reason'])->findOrFail($id);
+            $point = Point::with(['currentStudent.student', 'teacher', 'reason'])->findOrFail($id);
             return response()->json($point);
         } catch (\Exception $e) {
             return response()->json(['message' => 'لم يتم العثور على النقطة', 'error' => $e->getMessage()], 404);
@@ -61,13 +61,13 @@ class PointController extends Controller
             $point = Point::findOrFail($id);
 
             $validated = $request->validate([
-                'student_id' => 'exists:students,id',
+                'current_student_id' => 'exists:current_students,id',
                 'reason_id' => 'exists:reasons,id',
             ]);
 
             $point->update($request->only(['student_id', 'reason_id']));
 
-            return response()->json($point->load(['student', 'teacher', 'reason']));
+            return response()->json($point->load(['currentStudent.student', 'teacher', 'reason']));
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['message' => 'التحقق من البيانات فشل', 'errors' => $e->errors()], 422);
