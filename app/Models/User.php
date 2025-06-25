@@ -59,5 +59,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Student::class, 'parent_id');
     }
-
+      public function hasRole($role)
+    {
+        // تحقق مما إذا كان المستخدم يمتلك الدور المحدد
+        return $this->role === $role;
+    }
 }
