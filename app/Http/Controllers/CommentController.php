@@ -13,7 +13,8 @@ class CommentController extends Controller
     // عرض كل الملاحظات مع الطالب المرتبط
     public function index()
     {
-        return Comment::with(['student','user'])->get();
+       return Comment::with(['current_student'])->get();
+
     }
 
     // إضافة ملاحظة جديدة
@@ -26,7 +27,7 @@ class CommentController extends Controller
     // عرض ملاحظة واحدة
     public function show($id)
     {
-        return Comment::with('student')->findOrFail($id);
+      return Comment::with(['current_student'])->findOrFail($id);
     }
 
     // تعديل ملاحظة
@@ -40,10 +41,6 @@ class CommentController extends Controller
     // حذف ملاحظة
     public function destroy(Request $request)
     {
-          $request->validate([
-            'id' => 'required|exists:comments,id'
-        ]);
-
         $comment = Comment::findOrFail($request->id);
         $comment->delete();
         return response()->json(['message' => 'تم حذف الملاحظة بنجاح']);

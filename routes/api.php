@@ -96,19 +96,14 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
 
     Route::post('/students', [ITController::class, 'createStudent']);
     Route::patch('/students/{id}', [ITController::class, 'updateStudent']);
-
     Route::delete('/students/{id}', [ITController::class, 'deleteStudent']);
 
- Route::post('/buses', [ITController::class, 'createBus']);
-
+   Route::post('/buses', [ITController::class, 'createBus']);
     Route::patch('/buses/{id}', [ITController::class, 'updateBus']);
 
+     Route::delete('/buses/{id}', [ITController::class, 'deleteBus']);
     Route::delete('/buses/{id}', [ITController::class, 'deleteBus']);
 });
-
-
-
-
 
 // 👑 Admin Routes
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
@@ -124,12 +119,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(functi
 
 // 👤 Public (Authenticated) Routes
 Route::middleware('auth:sanctum')->group(function () {
-    // Classes - مشاهدة فقط (لـ admin مثلاً)
-    Route::get('/classes', [ClassesController::class, 'index']);
-    Route::get('/classes/{id}', [ClassesController::class, 'show']);
-
-
-    //current _Students
+     //current _Students
     Route::apiResource('current-students', CurrentStudentController::class);
     Route::get('/count/active', [CurrentStudentController::class, 'countActive']);
     Route::get('/count/postponed', [CurrentStudentController::class, 'countPostponed']);
@@ -138,19 +128,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/count/section/{sectionId}', [CurrentStudentController::class, 'countBySection']);
 
     // Comments
-    Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {
+    Route::middleware(['auth:sanctum', 'role:teacher|guide'])->group(function () {
     Route::get('/comments', [CommentController::class, 'index']);
     Route::post('/comments', [CommentController::class, 'store']);
     Route::get('/comments/{id}', [CommentController::class, 'show']);
     Route::put('/comments/{id}', [CommentController::class, 'update']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);});
+    
 
-    // Grades (عرض فقط)
-    // Route::get('/grades', [GradeController::class, 'index']);
-    // Route::get('/grades', [GradeController::class, 'store']);
-    // Route::get('/grades/{id}', [GradeController::class, 'show']);
-    // Route::put('/grades/{id}', [GradeController::class, 'update']);
-    // Route::delete('/grades/{id}', [GradeController::class, 'destroy']);
 
     // Points (عرض فقط)
     Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {
@@ -177,18 +162,24 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::put('/notifications', [NotificationController::class, 'update']);
     // Route::delete('/notifications', [NotificationController::class, 'destroy']);
 });
+<<<<<<< db_user1
     // Route::middleware(['auth:sanctum', 'role:guide,parent'])->group(function () {
     // Route::get('/ads', [AdController::class, 'index']);});
 
     Route::middleware(['auth', 'can:view-students'])->group(function () {
+=======
+ Route::middleware(['auth:sanctum', 'can:view-students'])->group(function () {
+>>>>>>> main
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('/students/{id}', [StudentController::class, 'show']);
+    Route::get('/students/search/by-name', [StudentController::class, 'searchByName']);
 });
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/classes', [ClassesController::class, 'index']);
     Route::get('/classes/{id}', [ClassesController::class, 'show']);
-    Route::get('/students/search/by-name', [StudentController::class, 'searchByName']);
+
 
     Route::get('/sections', [SectionController::class, 'index']); // للحصول على جميع الأقسام
     Route::get('/sections/{id}', [SectionController::class, 'show']); // للحصول على قسم محدد
@@ -209,12 +200,10 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'role:accountant'])->group(function () {
     // عرض كل الأقساط
     Route::get('/fees', [FeeController::class, 'index']);
-
-    // إنشاء قسط جديد لجميع الطلاب في صف معين
+     // إنشاء قسط جديد لجميع الطلاب في صف معين
     Route::post('/fees', [FeeController::class, 'store']);
         // دفع دفعة واحدة من القسط
-    Route::post('/installments/pay/{installmentId}', [FeeController::class, 'payInstallment']);
-
+     Route::post('/installments/pay/{installmentId}', [FeeController::class, 'payInstallment']);
     // حذف قسط مع دفعاته
     Route::delete('/fees/{id}', [FeeController::class, 'destroy']);
 });

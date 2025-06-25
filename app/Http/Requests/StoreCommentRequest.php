@@ -17,7 +17,7 @@ class StoreCommentRequest extends FormRequest
             'name' => 'required|string|max:255',
             'date' => 'required|date',
             'type' => 'required|in:إيجابية,سلبية,تحذير',
-            'student_id' => 'required|exists:current_students,id',
+        'current_student_id' => 'required|exists:current_students,id',
             'user_id' => 'required|exists:users,id',
         ];
     }
