@@ -2,6 +2,8 @@
 
 
 use Illuminate\Http\Request;
+//use App\Http\Controllers\CommentController;
+use Illuminate\Support\FacadesRoute;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassesController;
@@ -39,7 +41,7 @@ Route::middleware(['auth:sanctum', 'role:teacher'])->prefix('teacher')->group(fu
     Route::get('/sections/{sectionId}/students', [TeacherController::class, 'studentsInSection']);
     Route::get('/subjects', [TeacherController::class, 'mySubjects']);
     Route::post('/points', [TeacherController::class, 'givePoint']);
-    Route::post('/grades', [TeacherController::class, 'addGrade']);
+    //Route::post('/grades', [TeacherController::class, 'addGrade']);
     Route::post('/notes', [TeacherController::class, 'addNote']);
 });
 
@@ -129,12 +131,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/count/section/{sectionId}', [CurrentStudentController::class, 'countBySection']);
 
     // Comments
-    Route::middleware(['auth:sanctum', 'role:teacher|guide'])->group(function () {
+    /*Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {
     Route::get('/comments', [CommentController::class, 'index']);
     Route::post('/comments', [CommentController::class, 'store']);
     Route::get('/comments/{id}', [CommentController::class, 'show']);
     Route::put('/comments/{id}', [CommentController::class, 'update']);
+
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);});
+
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy']);});*/
+    Route::middleware(['auth:sanctum', 'role:teacher,guide'])->group(function () {
+    Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/comments/{id}', [CommentController::class, 'show'])->name('comments.show');
+    Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
+});
 
 
 
@@ -164,16 +176,15 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::delete('/notifications', [NotificationController::class, 'destroy']);
 });
 
+
     // Route::middleware(['auth:sanctum', 'role:guide,parent'])->group(function () {
     // Route::get('/ads', [AdController::class, 'index']);});
 
  Route::middleware(['auth:sanctum', 'role:guide'])->group(function () {
-
     Route::get('/students', [StudentController::class, 'index']);
     Route::get('/students/{id}', [StudentController::class, 'show']);
-    Route::get('/students/search/by-name', [StudentController::class, 'searchByName']);
+     Route::get('/students/search/by-name', [StudentController::class, 'searchByName']);
 });
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/classes', [ClassesController::class, 'index']);

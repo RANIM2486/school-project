@@ -18,27 +18,37 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $roles)
-{
+ // app/Http/Middleware/CheckRole.php (المنطق الصحيح)
 
-    $user = $request->user();
+
+public function handle(Request $request, Closure $next, ...$roles): Response
+{
+    // الخطوة 1: التأكد أن هناك مستخدم مسجل الدخول
+    if (!$request->user()) {
+        return response()->json(['message' => 'Unauthenticated.'], 401);
 
     if ($user === null) {
         return response()->json(['message' => 'Unauthorized'], 401);
+
     }
 
-    // إضافة ديباغ
-    Log::info('User role:', ['role' => $user->role]);
-
-    $userRoles = array_map('trim', explode(',', strtolower($user->role)));
-    $requiredRoles = array_map('trim', explode(',', strtolower($roles)));
-
-    foreach ($requiredRoles as $role) {
-        if (in_array($role, $userRoles)) {
-            return $next($request);
+    // الخطوة 2: المرور على كل دور مطلوب للمسار (مثلاً 'teacher', 'guide')
+    foreach ($roles as $role) {
+        // الخطوة 3: هل المستخدم الحالي لديه هذا الدور المحدد؟
+        // (نعتبر أن method hasRole() موجودة في User model وتعمل بشكل صحيح)
+        if ($request->user()->hasRole($role)) {
+            // إذا وجدنا أي دور مطابق، نسمح بالدخول فوراً وننهي الفحص
+            return $next($request); // تفضل بالدخول!
         }
     }
 
+<<<<<<< db-user2
+    // الخطوة 4: إذا انتهت حلقة المرور ولم يتم العثور على أي دور مطابق
+    // (أي أن المستخدم لا يمتلك "teacher" ولا "guide")
+    // عندها فقط نرفض الدخول
+    return response()->json(['message' => 'Forbidden.'], 403); // آسف، ممنوع!
+}
+=======
     return response()->json(['message' => 'Forbidden'], 403);
 
 
@@ -46,6 +56,7 @@ class RoleMiddleware
 
 
 
+>>>>>>> main
 }
 
 

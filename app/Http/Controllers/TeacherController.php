@@ -85,23 +85,6 @@ class TeacherController extends Controller
     }
 
     // إضافة علامة لطالب
-    public function addGrade(Request $request)
-    {
-      $validated = $request->validate([
-        'student_id' => 'required|exists:students,id',
-        'subject_id' => 'required|exists:subjects,id',
-        'grade' => 'required|numeric|min:0|max:100',
-    ]);
-
-    $grade = Grade::create([
-        'student_id' => $validated['student_id'],
-        'subject_id' => $validated['subject_id'],
-        'grade' => $validated['grade'],
-        'guid_id' => Auth::id(), // هذا هو الحقل الإضافي الذي سبب الخطأ
-    ]);
-
-    return response()->json($grade, 201);
-    }
 
     // إضافة ملاحظة لطالب
 
@@ -112,10 +95,12 @@ public function addNote(Request $request)
     $validated = $request->validate([
         'current_student_id' => 'required|exists:current_students,id',
         'content' => 'required|string',
+        'title'=>'required|string',
     ]);
 
     $note = comment::create([
         'current_student_id' => $validated['current_student_id'],
+           'title'=>$validated['title'],
         'content' => $validated['content'],
         'added_by' => Auth::user()->id,
         'user_id' => Auth::user()->id,
