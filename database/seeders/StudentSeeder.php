@@ -7,6 +7,9 @@ class StudentSeeder extends Seeder
 {
     public function run(): void
     {
+<<<<<<< db_user1
+         student::factory(50)->create();
+=======
 
            Student::create([
     'first_name' => 'John',
@@ -39,5 +42,6 @@ class StudentSeeder extends Seeder
     'section_id' => 1,
 
 ]);
+>>>>>>> main
     }
 }
