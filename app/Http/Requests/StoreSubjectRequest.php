@@ -17,11 +17,11 @@ class StoreSubjectRequest extends FormRequest
             'name' => 'required|string|max:255',
             'min_grade' => 'required|integer|min:0|max:100',
             'max_grade' => 'required|integer|min:1|max:100',
-            'exam1' => 'nullable|integer|min:0|max:100',
-            'exam2' => 'nullable|integer|min:0|max:100',
-            'exam3' => 'nullable|integer|min:0|max:100',
-            'final_exam' => 'nullable|integer|min:0|max:100',
-            'teacher_id' => 'nullable|exists:users,id',
+            'exam1' => 'required|integer|min:0|max:100',
+            'exam2' => 'required|integer|min:0|max:100',
+            'exam3' => 'required|integer|min:0|max:100',
+            'final_exam' => 'required|integer|min:0|max:100',
+            'teacher_id' => 'required|exists:users,id',
         ];
     }
 }

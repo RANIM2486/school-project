@@ -24,6 +24,14 @@ use Illuminate\Support\Facades\Auth;
 class ITController extends Controller
 {
     // 🧑‍💻 إنشاء حساب مستخدم (ما عدا المدير)
+<<<<<<< db-user2
+   public function createUser(Request $request)
+{
+    // تحقق مما إذا كان المستخدم مسجل الدخول ولديه دور "IT"
+    if (!Auth::user() || Auth::user()->role !== 'it') {
+        return response()->json(['message' => 'ليس لديك الصلاحيات لإنشاء حسابات'], 403);
+    }
+=======
     public function createUser(Request $request)
     {
          if ( Auth::user()->role === 'it') {
@@ -35,18 +43,34 @@ class ITController extends Controller
             'password' => 'required|string|min:6',
             'role' => 'required|in:admin,teacher,guide,it,parent,accountant',
         ]);
+>>>>>>> main
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => $validated['role'],
-        ]);
+    // تحقق من صحة البيانات المدخلة
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+        'role' => 'required|in:teacher,guide,parent,accountant', // استثنينا "admin"
+    ]);
 
+    // إنشاء المستخدم الجديد
+    $user = User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+        'role' => $validated['role'],
+    ]);
+
+    return response()->json($user, 201);
+}
+
+<<<<<<< db-user2
+=======
         return response()->json($user, 201);}
 
         return response()->json(['message' => 'ليس لديك الصلاحيات لإنشاء حسابات'], 403);
     }
+>>>>>>> main
 
     // 🏫 الشعب
   public function createClass(StoreClassRequest $request)
