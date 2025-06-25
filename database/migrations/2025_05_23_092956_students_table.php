@@ -21,7 +21,7 @@ return new class extends Migration
     $table->date('birth_date');        // تاريخ الميلاد
     $table->string('address')->nullable(); // العنوان
     $table->date('entry_date');        // تاريخ الدخول للمدرسة
-  $table->foreignId('user_id')->constrained('users')->onDelete('cascade');   // حساب الطالب نفسه
+  //$table->foreignId('user_id')->constrained('users')->onDelete('cascade');   // حساب الطالب نفسه
     $table->foreignId('parent_id')->constrained('users')->onDelete('cascade'); // حساب ولي الأمر
   $table->foreignId('class_id')->constrained('classes')->onDelete('cascade'); //   // الصف
     $table->foreignId('section_id')->constrained('sections')->onDelete('cascade'); // الشعبة

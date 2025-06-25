@@ -18,7 +18,7 @@ class student extends Model
         //'national_id',
         'address',
         'entry_date',
-        'user_id',
+       // 'user_id',
         'parent_id',
         'class_id',
         'section_id',

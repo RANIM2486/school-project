@@ -11,6 +11,7 @@ use App\Models\Grade;
 use App\Models\Point;
 use App\Models\Note;
 use App\Models\SubjectTeacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,18 +65,20 @@ class TeacherController extends Controller
     public function givePoint(Request $request)
     {
         $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
+            'current_student_id' => 'required|exists:current_students,id',
             'type' => 'required|in:positive,negative',
             'value' => 'required|integer',
             'note' => 'nullable|string',
         ]);
 
         $point = Point::create([
-            'student_id' => $validated['student_id'],
+            'current_student_id' => $validated['current_student_id'],
+            'reason_id' => $validated['reason_id'],
             'type' => $validated['type'],
             'value' => $validated['value'],
             'note' => $validated['note'],
-            'given_by' => Auth::user()->id,
+            //'given_by' => Auth::user()->id,
+            'teacher_id' => Auth::id(),
         ]);
 
         return response()->json($point, 201);
@@ -84,31 +87,44 @@ class TeacherController extends Controller
     // إضافة علامة لطالب
     public function addGrade(Request $request)
     {
-        $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'grade' => 'required|numeric|min:0|max:100',
-        ]);
+      $validated = $request->validate([
+        'student_id' => 'required|exists:students,id',
+        'subject_id' => 'required|exists:subjects,id',
+        'grade' => 'required|numeric|min:0|max:100',
+    ]);
 
-        $grade = Grade::create($validated);
+    $grade = Grade::create([
+        'student_id' => $validated['student_id'],
+        'subject_id' => $validated['subject_id'],
+        'grade' => $validated['grade'],
+        'guid_id' => Auth::id(), // هذا هو الحقل الإضافي الذي سبب الخطأ
+    ]);
 
-        return response()->json($grade, 201);
+    return response()->json($grade, 201);
     }
 
     // إضافة ملاحظة لطالب
-    public function addNote(Request $request)
-    {
-        $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'content' => 'required|string',
-        ]);
 
-        $note = comment::create([
-            'student_id' => $validated['student_id'],
-            'content' => $validated['content'],
-            'added_by' => Auth::user()->id,
-        ]);
 
-        return response()->json($note, 201);
-    }
+public function addNote(Request $request)
+{
+
+    $validated = $request->validate([
+        'current_student_id' => 'required|exists:current_students,id',
+        'content' => 'required|string',
+    ]);
+
+    $note = comment::create([
+        'current_student_id' => $validated['current_student_id'],
+        'content' => $validated['content'],
+        'added_by' => Auth::user()->id,
+        'user_id' => Auth::user()->id,
+        'name' => Auth::user()->name,
+        'date' => Carbon::now(), // إضافة التاريخ الحالي
+    ]);
+
+    return response()->json($note, 201);
+}
+
+
 }
