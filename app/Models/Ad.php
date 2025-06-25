@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Ad extends Model
 {
     use HasFactory;
-    protected $fillbale=['user_id', 'title', 'content'];
+    protected $fillable=['user_id', 'title', 'content'];
 
     public function user()
     {
