@@ -38,7 +38,7 @@ class GuideController extends Controller
         $section = Section::where('id', $sectionId)
             ->where('guide_id', $user->id)
             ->firstOrFail();
-        $students = $section->students;
+        $students = $section->currentStudents;
         return response()->json($students);
     }
 

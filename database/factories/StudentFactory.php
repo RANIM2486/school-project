@@ -26,7 +26,7 @@ class StudentFactory extends Factory
             'birth_date' => $this->faker->date,
             'address' => $this->faker->address,
             'entry_date' => $this->faker->date,
-            'user_id' => \App\Models\User::inRandomOrder()->first()->id,
+            //'user_id' => \App\Models\User::inRandomOrder()->first()->id,
             'parent_id' => \App\Models\User::inRandomOrder()->first()->id,
             'class_id' => \App\Models\classes::inRandomOrder()->first()->id,
             'section_id' => \App\Models\section::inRandomOrder()->first()->id,
