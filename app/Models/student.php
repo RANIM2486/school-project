@@ -54,16 +54,17 @@ class student extends Model
         return $this->hasMany(Grade::class);
     }
 
-
-
-
     // السجلات كطالب حالي
-    public function current ()
+    public function current()
     {
         return $this->hasOne(Current_Student::class);
     }
     public function buses()
-{
-    return $this->belongsToMany(Bus::class, 'bus_student');
-}
+    {
+        return $this->belongsToMany(Bus::class, 'bus_student');
+    }
+        public function fees()
+    {
+        return $this->hasMany(Fee::class);
+    }
 }

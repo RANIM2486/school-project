@@ -165,7 +165,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['auth:sanctum', 'role:guide'])->group(function () {
 
     Route::post('/ads', [AdController::class, 'store']);
-    Route::get('/ads', [AdController::class, 'index']); /// مشكلة
+    Route::get('guide/ads', [AdController::class, 'index']); /// مشكلة
     Route::get('/ads/{id}', [AdController::class, 'show']);
     Route::put('/ads/{id}', [AdController::class, 'update']);
     Route::delete('/ads/{id}', [AdController::class, 'destroy']);
@@ -208,13 +208,23 @@ Route::middleware(['auth'])->group(function () {
 });
 //Accountant
 Route::middleware(['auth', 'role:accountant'])->group(function () {
-    // عرض كل الأقساط
+    // // عرض كل الأقساط
+    // Route::get('/fees', [FeeController::class, 'index']);
+    //  // إنشاء قسط جديد لجميع الطلاب في صف معين
+    // Route::post('/fees', [FeeController::class, 'store']);
+    //     // دفع دفعة واحدة من القسط
+    //  Route::post('/installments/pay/{installmentId}', [FeeController::class, 'payInstallment']);
+    // // حذف قسط مع دفعاته
+    // Route::delete('/fees/{id}', [FeeController::class, 'destroy']);
     Route::get('/fees', [FeeController::class, 'index']);
-     // إنشاء قسط جديد لجميع الطلاب في صف معين
-    Route::post('/fees', [FeeController::class, 'store']);
-        // دفع دفعة واحدة من القسط
-     Route::post('/installments/pay/{installmentId}', [FeeController::class, 'payInstallment']);
-    // حذف قسط مع دفعاته
+
+    // إضافة دفعة لطالب
+    Route::post('/payments', [FeeController::class, 'addPayment']);
+
+    // تعديل دفعة (installment)
+    Route::put('/installments/{id}', [FeeController::class, 'updateInstallment']);
+
+    // حذف قسط كامل مع دفعاته
     Route::delete('/fees/{id}', [FeeController::class, 'destroy']);
 });
 
