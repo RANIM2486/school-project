@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('installments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fee_id')->constrained()->onDelete('cascade');
+            $table->foreignId('fee_id')->constrained("fees")->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['مدفوع', 'غير مدفوع'])->default('غير مدفوع');
             $table->date('due_date');

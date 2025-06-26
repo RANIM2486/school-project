@@ -9,8 +9,8 @@ use App\Http\Requests\StoreSectionRequest;
 use App\Http\Requests\UpdateSectionRequest;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
-use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateStudentRequest;
+//use App\Http\Requests\StoreStudentRequest;
+//use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Bus;
 use App\Models\User;
 use App\Models\Section;
@@ -127,99 +127,88 @@ class ITController extends Controller
     }
 
     // الطلاب
-    public function createStudent(StoreStudentRequest $request)
+    public function createStudent(Request $request)
     {
-            DB::beginTransaction();
+          $validated = $request->validate([
+        'first_name' => 'required|string|max:255',
+        'father_name' => 'required|string|max:255',
+        'mother_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'gender' => 'required|in:ذكر,أنثى',
+        'birth_date' => 'required|date',
+        'address' => 'nullable|string|max:255',
+        'entry_date' => 'required|date',
+        'class_id' => 'required|exists:classes,id',
+        'section_id' => 'required|exists:sections,id',
+        'parent_id' => 'required|exists:users,id',
+    ]);
 
-    try {
-        // إنشاء الطالب
-        $student = Student::create([
-            'first_name' => $request->first_name,
-            'father_name' => $request->father_name,
-            'mother_name' => $request->mother_name,
-            'last_name' => $request->last_name,
-            'gender' => $request->gender,
-            'birth_date' => $request->birth_date,
-            'address' => $request->address,
-            'entry_date' => $request->entry_date,
-            'parent_id' => $request->parent_id,
-            'class_id' => $request->class_id,
-            'section_id' => $request->section_id,
-        ]);
+    $student = Student::create($validated);
 
-        // إنشاء السجل في جدول الطلاب الحاليين
-        Current_Student::create([
-            'student_id' => $student->id,
-            'class_id' => $student->class_id,
-            'section_id' => $student->section_id,
-            'status' => 'مستمر', // أو خليه من الفورم $request->status
-        ]);
-         // تحديث عدد الطلاب في الصف
-        $class = classes::find($request->class_id);
-        $class->student_count += 1;
+    // إنشاء الطالب الحالي
+    $student->current()->create([
+        'class_id' => $student->class_id,
+        'section_id' => $student->section_id,
+        'status' => 'مستمر',
+    ]);
+
+    // تحديث الصف
+    $class = Classes::find($student->class_id);
+    if ($class) {
+        $class->students_count += 1;
         $class->save();
-
-
-        DB::commit();
-
-        return redirect()->route('students.index')->with('success', 'تم تسجيل الطالب بنجاح');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->withErrors(['error' => 'حدث خطأ: ' . $e->getMessage()]);
     }
-        // $student = Student::create($request->validated());
-        // return response()->json([
-        //     'message' => 'تم إنشاء الطالب بنجاح',
-        //     'data' => $student
-        // ], 201);
+    return response()->json(['message' => 'Student created successfully'], 201);
     }
-
-    public function updateStudent(UpdateStudentRequest $request, $id)
+    public function updateStudent(Request $request,$id)
     {
-         DB::beginTransaction();
+          // التحقق من صحة البيانات
+    $validated = $request->validate([
+        'first_name'   => 'required|string|max:255',
+        'father_name'  => 'required|string|max:255',
+        'mother_name'  => 'required|string|max:255',
+        'last_name'    => 'required|string|max:255',
+        'gender'       => 'required|in:ذكر,أنثى',
+        'birth_date'   => 'required|date',
+        'address'      => 'nullable|string|max:255',
+        'entry_date'   => 'required|date',
+        'class_id'     => 'required|exists:classes,id',
+        'section_id'   => 'required|exists:sections,id',
+        'parent_id'    => 'required|exists:users,id',
+    ]);
 
-    try {
-        // 1. تعديل بيانات الطالب
-        $student = Student::findOrFail($id);
+    // جلب الطالب
+    $student = Student::findOrFail($id);
+    $oldClassId = $student->class_id;
 
-        $student->update([
-            'first_name' => $request->first_name,
-            'father_name' => $request->father_name,
-            'mother_name' => $request->mother_name,
-            'last_name' => $request->last_name,
-            'gender' => $request->gender,
-            'birth_date' => $request->birth_date,
-            'address' => $request->address,
-            'entry_date' => $request->entry_date,
-            'parent_id' => $request->parent_id,
-            'class_id' => $request->class_id,
-            'section_id' => $request->section_id,
-        ]);
+    // تحديث بيانات الطالب
+    $student->update($validated);
 
-        // 2. تعديل سجل الطالب الحالي
-        $current = Current_Student::where('student_id', $student->id)->first();
+    // تحديث أو إنشاء سجل الطالب الحالي
+    $student->current()->updateOrCreate(
+        ['student_id' => $student->id],
+        [
+            'class_id'   => $student->class_id,
+            'section_id' => $student->section_id,
+            'status'     => 'مستمر',
+        ]
+    );
 
-        if ($current) {
-            $current->update([
-                'class_id' => $request->class_id,
-                'section_id' => $request->section_id,
-                'status' => $request->status,
-            ]);
+    // إذا تغير الصف، حدّث أعداد الطلاب
+    if ($oldClassId != $student->class_id) {
+        $oldClass = Classes::find($oldClassId);
+        if ($oldClass && $oldClass->student_count > 0) {
+            $oldClass->students_count -= 1;
+            $oldClass->save();
         }
 
-        DB::commit();
-
-        return redirect()->route('students.index')->with('success', 'تم تحديث بيانات الطالب بنجاح');
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->withErrors(['error' => 'فشل التحديث: ' . $e->getMessage()]);
+        $newClass = Classes::find($student->class_id);
+        if ($newClass) {
+            $newClass->student_count += 1;
+            $newClass->save();
+        }
     }
-        // $student = Student::findOrFail($id);
-        // $student->update($request->validated());
-        // return response()->json([
-        //     'message' => 'تم تعديل بيانات الطالب بنجاح',
-        //     'data' => $student
-        // ]);
+    return response()->json(['message' => 'تم تعديل الطالب بنجاح']);
     }
 
     public function deleteStudent($id)

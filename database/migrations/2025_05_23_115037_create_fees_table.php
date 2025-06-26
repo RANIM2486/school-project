@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->enum('type', ['مدرسة', 'باص']);
             $table->enum('status', ['مدفوع', 'غير مدفوع']);
             $table->date('due_date');
             $table->timestamps();

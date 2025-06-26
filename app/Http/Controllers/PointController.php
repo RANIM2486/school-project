@@ -26,7 +26,7 @@ class PointController extends Controller
             $user = Auth::user(); // فقط للحصول على ID المعلم الحالي
 
             $validated = $request->validate([
-                'current_student_id' => 'required|exists:students,id',
+                'current_student_id' => 'required|exists:current_studentس,id',
                 'reason_id' => 'required|exists:reasons,id',
             ]);
 
@@ -65,7 +65,7 @@ class PointController extends Controller
                 'reason_id' => 'exists:reasons,id',
             ]);
 
-            $point->update($request->only(['student_id', 'reason_id']));
+            $point->update($request->only(['current_student_id', 'reason_id']));
 
             return response()->json($point->load(['currentStudent.student', 'teacher', 'reason']));
 
