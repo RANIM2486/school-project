@@ -21,15 +21,13 @@ class RoleMiddleware
  // app/Http/Middleware/CheckRole.php (المنطق الصحيح)
 
 
+// app/Http/Middleware/CheckRole.php (المنطق الصحيح)
+
 public function handle(Request $request, Closure $next, ...$roles): Response
 {
     // الخطوة 1: التأكد أن هناك مستخدم مسجل الدخول
     if (!$request->user()) {
         return response()->json(['message' => 'Unauthenticated.'], 401);
-
-    if ($user === null) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-
     }
 
     // الخطوة 2: المرور على كل دور مطلوب للمسار (مثلاً 'teacher', 'guide')
@@ -42,21 +40,14 @@ public function handle(Request $request, Closure $next, ...$roles): Response
         }
     }
 
-<<<<<<< db-user2
     // الخطوة 4: إذا انتهت حلقة المرور ولم يتم العثور على أي دور مطابق
     // (أي أن المستخدم لا يمتلك "teacher" ولا "guide")
     // عندها فقط نرفض الدخول
     return response()->json(['message' => 'Forbidden.'], 403); // آسف، ممنوع!
 }
-=======
-    return response()->json(['message' => 'Forbidden'], 403);
-
-
-}
 
 
 
->>>>>>> main
 }
 
 
