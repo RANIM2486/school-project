@@ -28,13 +28,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-// 🔐 Authentication
+//  Authentication
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
-// 🧑‍🏫 Teacher Routes
+//  Teacher Routes
 Route::middleware(['auth:sanctum', 'role:teacher'])->prefix('teacher')->group(function () {
     Route::get('/classes', [TeacherController::class, 'myClasses']);
     Route::get('/sections', [TeacherController::class, 'mySections']);
@@ -76,7 +76,7 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
     // Route::post('/attendance', [GuideController::class, 'addAttendance']);
 });
 
-// 🧑‍💻 IT Routes
+// IT Routes
 
 
  Route::middleware(['auth:sanctum','role:it'])->group(function () {
@@ -107,7 +107,7 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
     Route::delete('/buses/{id}', [ITController::class, 'deleteBus']);
 });
 
-// 👑 Admin Routes
+//  Admin Routes
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/classes', [AdminController::class, 'allClasses']);
     Route::get('/sections', [AdminController::class, 'allSections']);
@@ -119,7 +119,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(functi
     Route::get('/ads', [AdminController::class, 'allAds']);
 });
 
-// 👤 Public (Authenticated) Routes
+//  Public (Authenticated) Routes
 Route::middleware('auth:sanctum')->group(function () {
      //current _Students
     Route::get('current-students', [CurrentStudentController::class,'index']);

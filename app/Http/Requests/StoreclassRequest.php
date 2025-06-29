@@ -16,7 +16,7 @@ class StoreClassRequest extends FormRequest
         return [
            'level' => 'required|string|max:255',         // المرحلة الدراسية
             'name' => 'required|string|max:255',          // اسم الصف
-            'student_count' => 'required|integer|min:0',        // عدد الطلاب
+            'students_count' => 'required|integer|min:0',        // عدد الطلاب
             'fees' => 'required|numeric|min:0',                  // القسط*
         ];
     }
