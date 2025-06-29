@@ -53,7 +53,7 @@ class GuideController extends Controller
             'exam1'        => 'nullable|numeric|min:0|max:100',
             'exam2'        => 'nullable|numeric|min:0|max:100',
             'exam3'        => 'nullable|numeric|min:0|max:100',
-            'quiz'         => 'nullable|numeric|min:0|max:100',
+            'quiz'         => 'nullable|integer|min:0|max:100',
             'final_exam'   => 'nullable|numeric|min:0|max:100',
             'date'         => 'nullable|date',
         ]);
