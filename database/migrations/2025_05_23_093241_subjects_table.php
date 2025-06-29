@@ -17,8 +17,9 @@ return new class extends Migration
     $table->integer('min_grade'); // الحد الأدنى للنجاح
     $table->integer('max_grade'); // الحد الأعلى (عادة 100)
     $table->integer('exam1')->nullable(); // سبر 1
-    $table->integer('exam2')->nullable(); // سبر 2
+    $table->integer('exam2')->nullable(); // سبر 2`
     $table->integer('exam3')->nullable(); // سبر 3
+    $table->integer('quiz')->nullable();  // مذاكرة
     $table->integer('final_exam')->nullable(); // الامتحان النهائي
     $table->foreignId('teacher_id')->nullable()->constrained('users')->onDelete('set null'); // المعلم
     $table->timestamps();
