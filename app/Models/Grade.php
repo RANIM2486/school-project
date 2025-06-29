@@ -17,7 +17,7 @@ class Grade extends Model
         'quiz',
         'final_exam',
         'date',
-        'guide_id'
+        'guid_id'
     ];
 
    public function student()

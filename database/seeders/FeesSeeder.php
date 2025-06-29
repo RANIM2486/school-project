@@ -9,7 +9,7 @@ class FeesSeeder extends Seeder
 {
     public function run(): void
     {
-        Fee::create([
+       Fee::create([
             'student_id' => 1,  // غيّر الـ ID حسب بياناتك
             'amount' => 500000,
             'type' => 'مدرسة',
