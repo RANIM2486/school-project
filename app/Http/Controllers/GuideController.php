@@ -48,12 +48,12 @@ class GuideController extends Controller
 
         $user = Auth::user();
         $validated = $request->validate([
-            'student_id'   => 'required|exists:current_students,id',
+            'student_id'   => 'required|exists:students,id',
             'subject_id'   => 'required|exists:subjects,id',
             'exam1'        => 'nullable|numeric|min:0|max:100',
             'exam2'        => 'nullable|numeric|min:0|max:100',
             'exam3'        => 'nullable|numeric|min:0|max:100',
-            'quiz'         => 'nullable|integer|min:0|max:100',
+            'quiz'         => 'nullable|numeric|min:0|max:100',
             'final_exam'   => 'nullable|numeric|min:0|max:100',
             'date'         => 'nullable|date',
         ]);
@@ -68,10 +68,11 @@ class GuideController extends Controller
             ->first();
 
         if ($grade) {
-            $grade->update(array_merge($validated, ['guide_id' => $user->id]));
+           // $grade->update(array_merge($validated, ['guide_id' => $user->id]));
+           $grade->update($validated);
             return response()->json($grade, 200);
         } else {
-            $validated['guide_id'] = $user->id;
+           // $validated['guide_id'] = $user->id;
             $grade = Grade::create($validated);
             return response()->json($grade, 201);
         }
@@ -92,29 +93,29 @@ class GuideController extends Controller
         return response()->json($grades);
     }
 
-    public function updateGrade(Request $request, $id)
-    {
-        $user = Auth::user();
+    // public function updateGrade(Request $request, $id)
+    // {
+    //     $user = Auth::user();
 
-        $validated = $request->validate([
-            'exam1'        => 'nullable|numeric|min:0|max:100',
-            'exam2'        => 'nullable|numeric|min:0|max:100',
-            'exam3'        => 'nullable|numeric|min:0|max:100',
-            'quiz'         => 'nullable|numeric|min:0|max:100',
-            'final_exam'   => 'nullable|numeric|min:0|max:100',
-            'date'         => 'nullable|date',
-        ]);
-        $validated["guide_id"]=$user->id;
-        $grade = Grade::findOrFail($id);
+    //     $validated = $request->validate([
+    //         'exam1'        => 'nullable|numeric|min:0|max:100',
+    //         'exam2'        => 'nullable|numeric|min:0|max:100',
+    //         'exam3'        => 'nullable|numeric|min:0|max:100',
+    //         'quiz'         => 'nullable|numeric|min:0|max:100',
+    //         'final_exam'   => 'nullable|numeric|min:0|max:100',
+    //         'date'         => 'nullable|date',
+    //     ]);
+    //     $validated["guide_id"]=$user->id;
+    //     $grade = Grade::findOrFail($id);
 
-        if (!$this->isStudentInGuideSections($grade->student_id, $user->id)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+    //     if (!$this->isStudentInGuideSections($grade->student_id, $user->id)) {
+    //         return response()->json(['error' => 'Unauthorized'], 403);
+    //     }
 
-        $grade->update($validated);
+    //     $grade->update($validated);
 
-        return response()->json($grade, 200);
-    }
+    //     return response()->json($grade, 200);
+    // }
 
     public function deleteGrade($id)
     {
