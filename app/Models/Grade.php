@@ -22,7 +22,7 @@ class Grade extends Model
 
    public function student()
     {
-        return $this->belongsTo(Current_Student::class);
+        return $this->belongsTo(student::class);
     }
 
     public function subject()

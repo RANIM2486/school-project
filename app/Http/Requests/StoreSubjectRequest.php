@@ -20,6 +20,7 @@ class StoreSubjectRequest extends FormRequest
             'exam1' => 'required|integer|min:0|max:100',
             'exam2' => 'required|integer|min:0|max:100',
             'exam3' => 'required|integer|min:0|max:100',
+            'quiz' => 'required|integer|min:0|max:100',
             'final_exam' => 'required|integer|min:0|max:100',
             'teacher_id' => 'required|exists:users,id',
         ];
