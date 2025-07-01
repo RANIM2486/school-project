@@ -25,31 +25,40 @@ use Illuminate\Support\Facades\Auth;
 class ITController extends Controller
 {
     // 🧑‍💻 إنشاء حساب مستخدم (ما عدا المدير)
-   public function createUser(Request $request)
-{
-    // تحقق مما إذا كان المستخدم مسجل الدخول ولديه دور "IT"
-    if (!Auth::user() || Auth::user()->role !== 'it') {
-        return response()->json(['message' => 'ليس لديك الصلاحيات لإنشاء حسابات'], 403);
-    }
+    public function createUser(Request $request)
+    {
+        // تحقق مما إذا كان المستخدم مسجل الدخول ولديه دور "IT"
+        if (!Auth::user() || Auth::user()->role !== 'it') {
+            return response()->json(['message' => 'ليس لديك الصلاحيات لإنشاء حسابات'], 403);
+        }
 
-    // public function createUser(Request $request)
-    // {
-    //      if ( Auth::user()->role === 'it') {
+        // public function createUser(Request $request)
+        // {
+        //      if ( Auth::user()->role === 'it') {
 
 
-        // $validated = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|email|unique:users,email',
-        //     'password' => 'required|string|min:6',
-        //     'role' => 'required|in:admin,teacher,guide,it,parent,accountant',
-        // ]);
+            // $validated = $request->validate([
+            //     'name' => 'required|string|max:255',
+            //     'email' => 'required|email|unique:users,email',
+            //     'password' => 'required|string|min:6',
+            //     'role' => 'required|in:admin,teacher,guide,it,parent,accountant',
+            // ]);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'role' => 'required|in:teacher,guide,parent,accountant', // استثنينا "admin"
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:6',
+                'role' => 'required|in:teacher,guide,parent,accountant', // استثنينا "admin"
+            ]);
+
+        // إنشاء المستخدم الجديد
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'],
         ]);
+
 
     // إنشاء المستخدم الجديد
     $user = User::create([
@@ -63,9 +72,12 @@ class ITController extends Controller
 
 }
  
+        return response()->json($user, 201);
+    }
 
 
-// 🏫 الشعب
+
+    // 🏫 الشعب
   public function createClass(StoreClassRequest $request)
     {
         $class = classes::create($request->validated());
@@ -227,42 +239,10 @@ class ITController extends Controller
         }
         return response()->json(['message' => 'تم حذف الطالب بنجاح']);
     }
-    public function createBus(Request $request)
-{
-    $validated = $request->validate([
-        'driver_name' => 'required|string|max:100',
-        'area' => 'required|string|max:20',
-        'phone' => 'required|integer|min:1',
-    ]);
+    public function allusers()
+    {
+        return response()->json(User::all());
+    }
 
-    $bus = Bus::create($validated);
-    return response()->json([
-        'message' => 'تم إنشاء الباص بنجاح',
-        'data' => $bus
-    ], 201);
 }
 
-public function updateBus(Request $request, $id)
-{
-    $bus = Bus::findOrFail($id);
-
-    $validated = $request->validate([
-        'driver_name' => 'sometimes|string|max:100',
-        'area' => 'sometimes|string|max:20',
-        'phone' => 'sometimes|integer|min:1',
-    ]);
-
-    $bus->update($validated);
-    return response()->json([
-        'message' => 'تم تعديل بيانات الباص بنجاح',
-        'data' => $bus
-    ]);
-}
-
-public function deleteBus($id)
-{
-    $bus = Bus::findOrFail($id);
-    $bus->delete();
-    return response()->json(['message' => 'تم حذف الباص بنجاح']);
-}
-}

@@ -17,6 +17,7 @@ class subject extends Model
         'exam1',
         'exam2',
         'exam3',
+        'quiz',
         'final_exam',
         'quiz',
         'teacher_id'

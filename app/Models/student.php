@@ -25,10 +25,10 @@ class student extends Model
     ];
 
     // العلاقة مع الحساب الخاص بالطالب
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 
     // العلاقة مع ولي الأمر
     public function parent()
@@ -58,10 +58,6 @@ class student extends Model
     public function current()
     {
         return $this->hasOne(Current_Student::class);
-    }
-    public function buses()
-    {
-        return $this->belongsToMany(Bus::class, 'bus_student');
     }
         public function fees()
     {
