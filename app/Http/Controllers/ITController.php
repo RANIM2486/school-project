@@ -60,7 +60,9 @@ class ITController extends Controller
     ]);
 
     return response()->json($user, 201);
+
 }
+ 
 
 
 // 🏫 الشعب
