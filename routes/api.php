@@ -100,7 +100,16 @@ Route::middleware(['auth:sanctum', 'role:guide'])->prefix('guide')->group(functi
     Route::patch('/students/{id}', [ITController::class, 'updateStudent']);
     Route::delete('/students/{id}', [ITController::class, 'deleteStudent']);
 
+ 
+   Route::post('/buses', [ITController::class, 'createBus']);
+    Route::patch('/buses/{id}', [ITController::class, 'updateBus']);
+
+     Route::delete('/buses/{id}', [ITController::class, 'deleteBus']);
+    Route::delete('/buses/{id}', [ITController::class, 'deleteBus']);
+
+
     Route::get('/users', [ITController::class, 'allusers']);
+
 });
 
 //  Admin Routes

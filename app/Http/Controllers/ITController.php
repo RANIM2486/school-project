@@ -59,8 +59,22 @@ class ITController extends Controller
             'role' => $validated['role'],
         ]);
 
+
+    // إنشاء المستخدم الجديد
+    $user = User::create([
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'password' => Hash::make($validated['password']),
+        'role' => $validated['role'],
+    ]);
+
+    return response()->json($user, 201);
+
+}
+ 
         return response()->json($user, 201);
     }
+
 
 
     // 🏫 الشعب

@@ -20,7 +20,9 @@ class UpdateSubjectRequest extends FormRequest
             'exam1' => 'nullable|integer|min:0|max:100',
             'exam2' => 'nullable|integer|min:0|max:100',
             'exam3' => 'nullable|integer|min:0|max:100',
+
             'quiz' => 'required|integer|min:0|max:100',
+
             'final_exam' => 'nullable|integer|min:0|max:100',
             'teacher_id' => 'nullable|exists:users,id',
         ];

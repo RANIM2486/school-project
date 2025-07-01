@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
     $table->id(); // رقم الملاحظة
-    $table->string('name'); // اسم الملاحظة
+    $table->string('note'); // اسم الملاحظة
     $table->date('date'); // تاريخ الملاحظة
     $table->enum('type', ['إيجابية', 'سلبية', 'تحذير']); // نوع الملاحظة
     $table->foreignId('current_student_id')->constrained('current_students')->onDelete('cascade'); // الطالب المرتبط
